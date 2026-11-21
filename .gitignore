@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+.fah/
+.playwright/
+test-results/
+playwright-report/
+coverage/
+.crap-mutation-cache.json

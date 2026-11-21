@@ -1,0 +1,27 @@
+{
+  "name": "kidstalk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive multilingual AAC stories with 3D scenes and printable books",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test",
+    "test:coverage": "c8 --reporter=json --reporter=text node --test",
+    "crap": "npm run test:coverage && crap4js",
+    "quality": "npm run crap && npm run build"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "c8": "^9.1.0",
+    "crap4js": "https://github.com/IstiN/crap4js/archive/43ab835e7b051090ee70b6303def81889b5decac.tar.gz",
+    "vite": "^7.1.7"
+  }
+}
