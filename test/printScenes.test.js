@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { renderPrintScene } from '../src/printScenes.js';
 
 test('print scenes are self-contained SVG illustrations for every story line', () => {
-  for (const storyId of ['cat', 'bunny']) {
+  for (const storyId of ['cat', 'bunny', 'tom']) {
     const scenes = Array.from({ length: 4 }, (_, lineIndex) => renderPrintScene(storyId, lineIndex));
     assert.equal(new Set(scenes).size, 4);
     scenes.forEach((scene) => {

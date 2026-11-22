@@ -79,8 +79,48 @@ function bunnyScene(line) {
   return svg(`${outdoors}${cloudAndRain(true)}${bench()}${bunny(340, 263, { wet: true })}<path d="M191 389q26 12 52 0M443 390q26 12 52 0" fill="none" stroke="#e3f2f4"/>`);
 }
 
+function tomCharacter(line) {
+  const armEnds = [
+    [[-92, 72], [92, -42]],
+    [[-75, 82], [88, -105]],
+    [[-24, -12], [24, -12]],
+    [[-82, 75], [82, 75]],
+  ][line];
+  const [[leftX, leftY], [rightX, rightY]] = armEnds;
+  return `<g transform="translate(320 ${line === 0 ? 220 : 235})">
+    <path d="M45 70C125 70 120 145 80 135 55 129 73 105 94 116" fill="none" stroke="#777d82" stroke-width="20"/>
+    <path d="M-25 105-35 170M25 105 35 170" fill="none" stroke="#656c72" stroke-width="25"/>
+    <ellipse class="paint" cx="-43" cy="180" rx="31" ry="16" fill="#f4f0e9"/><ellipse class="paint" cx="43" cy="180" rx="31" ry="16" fill="#f4f0e9"/>
+    <path d="M-45 20Q${leftX} ${leftY - 15} ${leftX} ${leftY}M45 20Q${rightX} ${rightY - 15} ${rightX} ${rightY}" fill="none" stroke="#777d82" stroke-width="25"/>
+    <circle class="paint" cx="${leftX}" cy="${leftY}" r="16" fill="#777d82"/><circle class="paint" cx="${rightX}" cy="${rightY}" r="16" fill="#777d82"/>
+    <ellipse class="paint" cx="0" cy="62" rx="61" ry="78" fill="#d95f58"/><ellipse class="paint" cx="0" cy="65" rx="32" ry="48" fill="#f4f0e9"/>
+    <path d="M-29-2Q0 22 29-2" fill="none" stroke="#f4f0e9" stroke-width="10"/><circle cx="-12" cy="35" r="4" fill="#f4f0e9" stroke="none"/><circle cx="12" cy="35" r="4" fill="#f4f0e9" stroke="none"/>
+    <path class="paint" d="M-65-104-68-176-21-130M65-104 68-176 21-130" fill="#777d82"/>
+    <path class="paint" d="M-55-119-58-155-34-132M55-119 58-155 34-132" fill="#e9939b"/>
+    <ellipse class="paint" cx="0" cy="-67" rx="82" ry="72" fill="#777d82"/>
+    <ellipse class="paint" cx="-29" cy="-76" rx="24" ry="29" fill="#f4f0e9"/><ellipse class="paint" cx="29" cy="-76" rx="24" ry="29" fill="#f4f0e9"/>
+    <ellipse cx="-29" cy="-75" rx="14" ry="20" fill="#6ea86c" stroke="none"/><ellipse cx="29" cy="-75" rx="14" ry="20" fill="#6ea86c" stroke="none"/>
+    <ellipse cx="-29" cy="-75" rx="6" ry="14" fill="#243832" stroke="none"/><ellipse cx="29" cy="-75" rx="6" ry="14" fill="#243832" stroke="none"/>
+    <circle cx="-34" cy="-84" r="5" fill="#fff" stroke="none"/><circle cx="24" cy="-84" r="5" fill="#fff" stroke="none"/>
+    <ellipse class="paint" cx="-20" cy="-39" rx="31" ry="23" fill="#f4f0e9"/><ellipse class="paint" cx="20" cy="-39" rx="31" ry="23" fill="#f4f0e9"/>
+    <path class="paint" d="M-14-50Q0-60 14-50L0-38Z" fill="#e9939b"/>
+    <path d="M0-38v10m0 0q-20 20-34 0m34 0q20 20 34 0M-48-38-91-44M-48-27-90-19M48-38 91-44M48-27 90-19" fill="none"/>
+    <path d="M-20-125-15-108M0-130v22M20-125 15-108" fill="none" stroke="#565d63" stroke-width="7"/>
+  </g>`;
+}
+
+function tomScene(line) {
+  const room = `<rect class="paint" width="640" height="460" rx="24" fill="#e8e5f1"/><path class="paint" d="M0 340h640v120H0z" fill="#d9cfbd"/><ellipse class="paint" cx="320" cy="405" rx="200" ry="37" fill="#9ebfc0"/><path class="paint" d="M68 312h145v38H68z" fill="#b2c8d2"/><ellipse class="paint" cx="140" cy="312" rx="68" ry="22" fill="#f0d5a6"/><g><path class="paint" d="M520 182h70v35h-70z" fill="#f1eee8"/><path d="M555 217v105M530 185q25-55 50 0" fill="none" stroke="#91a8ad" stroke-width="9"/></g>`;
+  if (line === 0) return svg(`${room}${tomCharacter(line)}<path d="M205 155q-25 35-15 70M435 145q25 35 15 70M272 65q48-25 96 0" fill="none" stroke="#d6a657" stroke-dasharray="7 9"/>`);
+  if (line === 1) return svg(`${room}${tomCharacter(line)}<path d="M424 96l20-20m-7 40 28-8m-46-29 4-28" fill="none" stroke="#d6a657" stroke-width="5"/>`);
+  if (line === 2) return svg(`${room}${tomCharacter(line)}<g transform="translate(343 221) rotate(-18)"><rect class="paint" x="-8" y="-55" width="16" height="75" rx="7" fill="#6fa9ba"/><rect class="paint" x="-13" y="-63" width="26" height="15" rx="4" fill="#f4f0e9"/></g><g fill="#d8f1f2" stroke="#8bb8c7"><circle cx="210" cy="125" r="15"/><circle cx="440" cy="135" r="20"/><circle cx="462" cy="83" r="11"/></g>`);
+  return svg(`${room}${tomCharacter(line)}${ball(475, 365)}<g fill="#d6a657" stroke="#43534f"><ellipse cx="175" cy="112" rx="13" ry="10"/><path d="M186 110V62l34-8v47" fill="none" stroke-width="7"/><ellipse cx="211" cy="103" rx="13" ry="10"/><ellipse cx="466" cy="132" rx="12" ry="9"/><path d="M476 130V84l29-7" fill="none" stroke-width="7"/></g>`);
+}
+
 export function renderPrintScene(storyId, lineIndex = 0) {
   const numericIndex = Number(lineIndex);
   const line = Number.isFinite(numericIndex) ? Math.max(0, Math.min(3, Math.trunc(numericIndex))) : 0;
-  return storyId === 'cat' ? catScene(line) : bunnyScene(line);
+  if (storyId === 'cat') return catScene(line);
+  if (storyId === 'tom') return tomScene(line);
+  return bunnyScene(line);
 }

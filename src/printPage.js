@@ -48,7 +48,7 @@ export function renderPrintPage(app, requestedStory) {
             <p>${story.shortDescription}</p>
             <div class="print-cover-tags">${story.tags.map((tag) => `<span>${tag}</span>`).join('')}</div>
             <strong class="print-cover-author">${story.author}</strong>
-            <small class="print-license">Пиктограммы / Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0</small>
+            <small class="print-license">Пиктограммы / Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0; OpenMoji contributors · CC BY-SA 4.0</small>
           </div>
           <div class="print-scene print-cover-scene" role="img" aria-label="${story.title}">
             ${renderPrintScene(story.id)}

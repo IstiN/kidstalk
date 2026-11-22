@@ -22,6 +22,7 @@ const translations = {
     'catalog.heroNote': 'Для детей, родителей и специалистов',
     'catalog.bunny': 'Зайка',
     'catalog.cat': 'Котик',
+    'catalog.tom': 'Том',
     'catalog.listenWord': 'слушай',
     'catalog.touchWord': 'трогай',
     'catalog.featuresAria': 'Возможности приложения',
@@ -41,7 +42,7 @@ const translations = {
     'catalog.interactionText': 'Потрогай зайку, скамейку, тучу, котика или мячик прямо в 3D-сцене — предмет ответит словом и движением.',
     'common.words': '{count} слов',
     'footer.message': 'Каждое слово важно',
-    'footer.symbols': 'Пиктограммы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
+    'footer.symbols': 'Пиктограммы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0 · OpenMoji · CC BY-SA 4.0',
     'language.label': 'Язык',
     'language.auto': 'Авто: {language}',
     'print.view': 'Версия для печати',
@@ -131,6 +132,7 @@ const translations = {
     'catalog.heroNote': 'For children, parents and specialists',
     'catalog.bunny': 'Bunny',
     'catalog.cat': 'Kitty',
+    'catalog.tom': 'Tom',
     'catalog.listenWord': 'listen',
     'catalog.touchWord': 'touch',
     'catalog.featuresAria': 'App features',
@@ -150,7 +152,7 @@ const translations = {
     'catalog.interactionText': 'Touch the bunny, bench, cloud, kitty or ball right in the 3D scene — the object responds with a word and movement.',
     'common.words': '{count} words',
     'footer.message': 'Every word matters',
-    'footer.symbols': 'Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
+    'footer.symbols': 'Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0 · OpenMoji · CC BY-SA 4.0',
     'language.label': 'Language',
     'language.auto': 'Auto: {language}',
     'print.view': 'Print view',
@@ -240,6 +242,7 @@ const translations = {
     'catalog.heroNote': 'Для дзяцей, бацькоў і спецыялістаў',
     'catalog.bunny': 'Зайка',
     'catalog.cat': 'Коцік',
+    'catalog.tom': 'Том',
     'catalog.listenWord': 'слухай',
     'catalog.touchWord': 'кранай',
     'catalog.featuresAria': 'Магчымасці праграмы',
@@ -259,7 +262,7 @@ const translations = {
     'catalog.interactionText': 'Патрымай зайку, лаўку, хмару, коціка або мячык проста ў 3D-сцэне — прадмет адкажа словам і рухам.',
     'common.words': '{count} слоў',
     'footer.message': 'Кожнае слова важна',
-    'footer.symbols': 'Піктаграмы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
+    'footer.symbols': 'Піктаграмы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0 · OpenMoji · CC BY-SA 4.0',
     'language.label': 'Мова',
     'language.auto': 'Аўто: {language}',
     'print.view': 'Версія для друку',
@@ -517,6 +520,83 @@ const storyTranslations = {
         },
       },
     },
+    tom: {
+      title: 'Tom',
+      author: 'An original KidsTalk character',
+      format: 'Actions and play',
+      subtitle: 'Movement, joy and care',
+      description: 'Choose a card on the left and watch Tom on the right. Name movements, feelings and helpful everyday actions.',
+      shortDescription: 'Tom the grey kitten loves to move, laugh, take care of himself and play. Choose an action and copy it with him.',
+      tags: ['Movement', 'Feelings', 'Habits'],
+      initialCaption: 'Meet Tom, a grey kitten with green eyes and a red shirt. Choose an action!',
+      finalCaption: 'Tom has shown every action: moving, sharing joy, caring for himself, resting and playing. You can start again!',
+      lines: {
+        'line-1': {
+          words: {
+            walk: {
+              word: 'Walk',
+              caption: 'Tom walks forward, calmly moving his paws. Walk along with him!',
+            },
+            run: {
+              word: 'Run',
+              caption: 'Tom runs quickly and happily. His paws move while his tail helps him balance.',
+            },
+            jump: {
+              word: 'Jump',
+              caption: 'Tom bends his knees, pushes off with his paws and jumps joyfully into the air!',
+            },
+          },
+        },
+        'line-2': {
+          words: {
+            hello: {
+              word: 'Hello',
+              caption: 'Tom smiles and waves with his raised paw. Wave back and say, “Hello!”',
+            },
+            laugh: {
+              word: 'Laugh',
+              caption: 'Tom laughs happily: his eyes shine and his whiskers bounce. Laugh along with him!',
+            },
+            dance: {
+              word: 'Dance',
+              caption: 'Tom dances: he sways, lifts his paws and taps his feet to the music.',
+            },
+          },
+        },
+        'line-3': {
+          words: {
+            'brush-teeth': {
+              word: 'Brush teeth',
+              caption: 'Tom picks up his toothbrush and carefully brushes his teeth. We brush our teeth morning and night!',
+            },
+            wash: {
+              word: 'Wash',
+              caption: 'Tom washes with clean water, then dries his face with a soft towel.',
+            },
+            eat: {
+              word: 'Eat',
+              caption: 'Tom sits at the table and eats calmly. Enjoy your meal, Tom!',
+            },
+          },
+        },
+        'line-4': {
+          words: {
+            sleep: {
+              word: 'Sleep',
+              caption: 'Tom gets cozy on his pillow, closes his eyes and peacefully falls asleep.',
+            },
+            ball: {
+              word: 'Ball',
+              caption: 'Tom tosses the bright ball, catches it with his paws and plays happily.',
+            },
+            sing: {
+              word: 'Sing',
+              caption: 'Tom sings his favorite song. Cheerful musical notes dance around him!',
+            },
+          },
+        },
+      },
+    },
   },
   be: {
     bunny: {
@@ -692,6 +772,83 @@ const storyTranslations = {
             kotiku: {
               word: 'коціку',
               caption: 'Коцік зноў рады! Мячык побач, а мама — побач з коцікам.',
+            },
+          },
+        },
+      },
+    },
+    tom: {
+      title: 'Том',
+      author: 'Арыгінальны персанаж KidsTalk',
+      format: 'Дзеянні і гульня',
+      subtitle: 'Рух, радасць і клопат',
+      description: 'Выбірай карткі злева і назірай за Томам справа. Называй рухі, пачуцці і карысныя штодзённыя дзеянні.',
+      shortDescription: 'Шэры коцік Том любіць рухацца, смяяцца, клапаціцца аб сабе і гуляць. Выбяры дзеянне і паўтары яго разам з ім.',
+      tags: ['Рух', 'Пачуцці', 'Звычкі'],
+      initialCaption: 'Знаёмся: гэта Том, шэры коцік з зялёнымі вачыма і ў чырвонай футболцы. Выбяры дзеянне!',
+      finalCaption: 'Том паказаў усе дзеянні: рух, радасць, клопат пра сябе, адпачынак і гульню. Можна пачаць ізноў!',
+      lines: {
+        'line-1': {
+          words: {
+            walk: {
+              word: 'Ісці',
+              caption: 'Том ідзе наперад, спакойна перастаўляючы лапкі. Ідзі разам з ім!',
+            },
+            run: {
+              word: 'Бегчы',
+              caption: 'Том хутка і весела бяжыць. Яго лапкі рухаюцца, а хвост дапамагае трымаць раўнавагу.',
+            },
+            jump: {
+              word: 'Прыгаць',
+              caption: 'Том прысядае, адштурхваецца лапкамі і радасна падпрыгвае ўверх!',
+            },
+          },
+        },
+        'line-2': {
+          words: {
+            hello: {
+              word: 'Прывітанне',
+              caption: 'Том усміхаецца і махае паднятай лапкай. Памахай яму і скажы: «Прывітанне!»',
+            },
+            laugh: {
+              word: 'Смяяцца',
+              caption: 'Том весела смяецца: вочы ззяюць, а вусы падпрыгваюць. Пасмейся разам з ім!',
+            },
+            dance: {
+              word: 'Танцаваць',
+              caption: 'Том танцуе: пахісваецца, падымае лапкі і прытаптывае ў такт музыцы.',
+            },
+          },
+        },
+        'line-3': {
+          words: {
+            'brush-teeth': {
+              word: 'Чысціць зубы',
+              caption: 'Том бярэ зубную шчотку і старанна чысціць зубы. Чысцім зубы раніцай і вечарам!',
+            },
+            wash: {
+              word: 'Умывацца',
+              caption: 'Том умываецца чыстай вадой, а потым выцірае мордачку мяккім ручніком.',
+            },
+            eat: {
+              word: 'Есці',
+              caption: 'Том сядзіць за сталом і спакойна есць. Смачна есці, Том!',
+            },
+          },
+        },
+        'line-4': {
+          words: {
+            sleep: {
+              word: 'Спать',
+              caption: 'Том утульна ўмяшчаецца на падушцы, закрывае вочы і спакойна засынае.',
+            },
+            ball: {
+              word: 'Мяч',
+              caption: 'Том падкідае яркі мяч, ловіць яго лапкамі і радасна гуляе.',
+            },
+            sing: {
+              word: 'Спяваць',
+              caption: 'Том спявае сваю любімую песеньку. Вакол яго танцуюць вясёлыя ноты!',
             },
           },
         },

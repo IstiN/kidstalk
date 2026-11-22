@@ -73,7 +73,7 @@ export function renderCatalog(app) {
             <div><div class="eyebrow"><span></span> ${t('catalog.library')}</div><h2 id="stories-title">${t('catalog.storiesTitle')}</h2></div>
             <span class="catalog-count">${t('catalog.storyCount', { count: localizedStories.length })}</span>
           </div>
-          <div class="story-catalog-grid">
+          <div class="story-catalog-grid" style="--story-count: ${localizedStories.length}">
             ${localizedStories.map((story) => {
               const wordCount = story.lines.flatMap((line) => line.words).length;
               return `

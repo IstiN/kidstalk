@@ -15,6 +15,7 @@
 |---|---|---|---|
 | [ARASAAC](https://arasaac.org/) | Около 13 000 пиктограмм; PNG, цветные и чёрно-белые варианты; API; русская локаль `ru` | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | Подходит для некоммерческого приложения. Нужны атрибуция и та же лицензия у производных символов. Коммерческое использование не входит в эту лицензию. |
 | [Mulberry Symbols](https://mulberrysymbols.org/) | Около 3 100 символов; SVG; ZIP, PDF, CSV | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Можно использовать коммерчески с атрибуцией. Производные символы распространяются под той же лицензией. Меньше детских и бытовых понятий, чем у ARASAAC. |
+| [OpenMoji](https://openmoji.org/) | Цветные и монохромные SVG | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Используется для 12 действий Тома. Оригинальные SVG хранятся локально; обязательны атрибуция и ShareAlike для производных. |
 | [Sclera Symbols](https://www.sclera.be/en/picto/overview) | Около 11 000 высококонтрастных символов | [CC BY-NC 2.0 BE](https://creativecommons.org/licenses/by-nc/2.0/be/deed.en) | Бесплатно некоммерчески с указанием источника; для коммерческого проекта требуется отдельное соглашение. |
 | [OpenSymbols](https://www.opensymbols.org/) | Более 50 000 символов из нескольких коллекций; поиск; API | Разные лицензии у разных символов | Хорош для поиска. Нельзя считать всю коллекцию одной открытой лицензией. API требует получения shared secret и токена. |
 | [Global Symbols](https://globalsymbols.com/) | Открытые наборы, переводы, конструктор коммуникационных таблиц | Зависит от набора | Полезен для просмотра коллекций и создания таблиц; проверять лицензию каждого набора. |
@@ -24,6 +25,7 @@
 
 - ARASAAC, условия и атрибуция: <https://aulaabierta.arasaac.org/en/terms-of-use>.
 - ARASAAC, OpenAPI-спецификация: <https://api.arasaac.org/arasaac_v1.json>.
+- OpenMoji, проект и открытые SVG: <https://openmoji.org/> и <https://github.com/hfg-gmuend/openmoji>.
 - Mulberry, лицензия и загрузки: <https://mulberrysymbols.org/>.
 - Mulberry, LICENSE.txt: <https://github.com/mulberrysymbols/mulberry-symbols/blob/master/LICENSE.txt>.
 - Sclera, условия: <https://www.sclera.be/en/picto/copyright>.
@@ -87,6 +89,10 @@ https://static.arasaac.org/pictograms/3123/3123_500.png
 - «весь» — `5596`, `27091`;
 - «сидеть» — `25081`, `25082`, `25083`, `31937`;
 - «ждать» — `8109`, `16697`, `25077`, `25078`.
+
+## OpenMoji для действий Тома
+
+Для «идти», «бежать», «прыгать», «привет», «смеяться», «танцевать», «чистить зубы», «умываться», «кушать», «спать», «мяч» и «петь» используются локальные цветные SVG OpenMoji. В манифесте это `symbol: { set: 'openmoji', id: '1F6B6' }` и аналогичные стабильные Unicode ID. Полная таблица файлов и лицензия находятся в `public/symbols/openmoji/LICENSE.md`.
 
 ## Как хранить символ в манифесте истории
 
