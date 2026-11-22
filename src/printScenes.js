@@ -9,20 +9,26 @@ function chair(x, y) {
 }
 
 function cat(x, y, scale = 1, { mom = false, reach = false, sad = false } = {}) {
-  const fur = mom ? '#c58e70' : '#e5a06f';
+  const fur = mom ? '#cabdae' : '#e8a468';
+  const cheek = mom ? '#f5efe6' : '#fff3e2';
   return `<g transform="translate(${x} ${y}) scale(${scale})">
     <path class="paint" d="M-43 37C-100 17-105 73-74 79-52 83-47 64-62 58-74 53-75 65-67 66" fill="${fur}"/>
-    ${reach ? '<path class="paint" d="M30 25C78 35 123 47 170 44L174 58C121 69 70 58 25 48Z" fill="#e5a06f"/>' : ''}
+    ${reach ? `<path class="paint" d="M30 25C78 35 123 47 170 44L174 58C121 69 70 58 25 48Z" fill="${fur}"/>` : ''}
     <ellipse class="paint" cx="0" cy="25" rx="53" ry="61" fill="${fur}"/>
+    <ellipse class="paint" cx="0" cy="28" rx="33" ry="42" fill="${cheek}"/>
     <ellipse class="paint" cx="-31" cy="75" rx="30" ry="16" fill="${fur}"/><ellipse class="paint" cx="31" cy="75" rx="30" ry="16" fill="${fur}"/>
-    <path class="paint" d="M-42-70-34-119-7-83M42-70 34-119 7-83" fill="${fur}"/>
-    <path class="paint" d="M-34-83-31-103-18-85M34-83 31-103 18-85" fill="#edb2a4"/>
-    <circle class="paint" cx="0" cy="-48" r="48" fill="${fur}"/>
-    <ellipse class="paint" cx="0" cy="-31" rx="26" ry="18" fill="#f7dfc5"/>
-    <ellipse cx="-18" cy="-53" rx="5" ry="7" fill="#354943" stroke="none"/><ellipse cx="18" cy="-53" rx="5" ry="7" fill="#354943" stroke="none"/>
-    <path d="M-5-35 0-30 5-35Z" fill="#b76f70"/><path d="M0-30v7m0 0q-8 ${sad ? -5 : 7}-13 0m13 0q8 ${sad ? -5 : 7} 13 0M-27-30h-28m28 9-27 7M27-30h28m-28 9 27 7" fill="none"/>
-    <path d="M-12-83-8-70M0-86v16M12-83 8-70" fill="none" stroke="#a87457"/>
-    ${mom ? '<path class="paint" d="M-55-91q-25-20-27 7 3 20 29 4 23 17 29-5-2-24-31-6Z" fill="#cf7f89"/><circle cx="-53" cy="-85" r="7" fill="#9f5e67"/>' : ''}
+    <ellipse class="paint" cx="-34" cy="-88" rx="20" ry="30" transform="rotate(-16 -34 -88)" fill="${fur}"/><ellipse class="paint" cx="34" cy="-88" rx="20" ry="30" transform="rotate(16 34 -88)" fill="${fur}"/>
+    <ellipse class="paint" cx="-34" cy="-87" rx="11" ry="18" transform="rotate(-16 -34 -87)" fill="#f29aa6"/><ellipse class="paint" cx="34" cy="-87" rx="11" ry="18" transform="rotate(16 34 -87)" fill="#f29aa6"/>
+    <ellipse class="paint" cx="0" cy="-48" rx="52" ry="46" fill="${fur}"/>
+    <path d="M-28-74Q-18-81-8-74M8-74Q18-81 28-74" fill="none" stroke="#997355" stroke-width="3.5"/>
+    <ellipse class="paint" cx="-18" cy="-54" rx="14" ry="16" fill="#fff"/><ellipse class="paint" cx="18" cy="-54" rx="14" ry="16" fill="#fff"/>
+    <ellipse cx="-17" cy="-54" rx="9.5" ry="11" fill="#5cc460" stroke="none"/><ellipse cx="17" cy="-54" rx="9.5" ry="11" fill="#5cc460" stroke="none"/>
+    <ellipse cx="-17" cy="-54" rx="5.5" ry="6.5" fill="#1f2b27" stroke="none"/><ellipse cx="17" cy="-54" rx="5.5" ry="6.5" fill="#1f2b27" stroke="none"/>
+    <circle cx="-20" cy="-58" r="3" fill="#fff" stroke="none"/><circle cx="14" cy="-58" r="3" fill="#fff" stroke="none"/>
+    <ellipse class="paint" cx="-13" cy="-31" rx="19" ry="13" fill="${cheek}"/><ellipse class="paint" cx="13" cy="-31" rx="19" ry="13" fill="${cheek}"/>
+    <ellipse class="paint" cx="0" cy="-38" rx="8.5" ry="6" fill="#f29aa6"/>
+    <path d="M0-32v7m0 0q-8 ${sad ? -5 : 7}-14 0m14 0q8 ${sad ? -5 : 7} 14 0M-29-32h-26m26 8-25 6M29-32h26m-26 8 25 6" fill="none"/>
+    ${mom ? '<path class="paint" d="M-48-88q-20-16-22 6 3 16 24 3 19 14 24-4-2-19-26-5Z" fill="#e38492"/><circle cx="-46" cy="-83" r="5.5" fill="#b85f6d"/>' : ''}
   </g>`;
 }
 
@@ -46,20 +52,43 @@ function bench() {
   </g>`;
 }
 
+function bunnyEars(wet) {
+  if (wet) {
+    return '<ellipse class="paint" cx="-53" cy="-88" rx="18" ry="55" transform="rotate(-48 -53 -88)" fill="#9b96b5"/><ellipse class="paint" cx="53" cy="-88" rx="18" ry="55" transform="rotate(48 53 -88)" fill="#9b96b5"/>';
+  }
+  return '<ellipse class="paint" cx="-25" cy="-116" rx="19" ry="61" transform="rotate(-8 -25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="25" cy="-116" rx="19" ry="61" transform="rotate(8 25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="-25" cy="-117" rx="8" ry="40" transform="rotate(-8 -25 -117)" fill="#e8b4b8"/><ellipse class="paint" cx="25" cy="-117" rx="8" ry="40" transform="rotate(8 25 -117)" fill="#e8b4b8"/>';
+}
+
 function bunny(x, y, { wet = false, reaching = false } = {}) {
   const fur = wet ? '#9b96b5' : '#c9c2d9';
-  const ears = wet
-    ? '<ellipse class="paint" cx="-53" cy="-88" rx="18" ry="55" transform="rotate(-48 -53 -88)" fill="#9b96b5"/><ellipse class="paint" cx="53" cy="-88" rx="18" ry="55" transform="rotate(48 53 -88)" fill="#9b96b5"/>'
-    : '<ellipse class="paint" cx="-25" cy="-116" rx="19" ry="61" transform="rotate(-8 -25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="25" cy="-116" rx="19" ry="61" transform="rotate(8 25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="-25" cy="-117" rx="8" ry="40" transform="rotate(-8 -25 -117)" fill="#e8b4b8"/><ellipse class="paint" cx="25" cy="-117" rx="8" ry="40" transform="rotate(8 25 -117)" fill="#e8b4b8"/>';
-  return `<g transform="translate(${x} ${y})${reaching ? ' rotate(16)' : ''}">${ears}<ellipse class="paint" cx="0" cy="35" rx="54" ry="65" fill="${fur}"/><ellipse class="paint" cx="0" cy="38" rx="34" ry="43" fill="#f4ede2"/><circle class="paint" cx="0" cy="-37" r="48" fill="${fur}"/><ellipse class="paint" cx="-35" cy="85" rx="31" ry="19" fill="${fur}"/><ellipse class="paint" cx="35" cy="85" rx="31" ry="19" fill="${fur}"/>
+  const smileCurve = wet ? -4 : 6;
+  return `<g transform="translate(${x} ${y})${reaching ? ' rotate(16)' : ''}">${bunnyEars(wet)}<ellipse class="paint" cx="0" cy="35" rx="54" ry="65" fill="${fur}"/><ellipse class="paint" cx="0" cy="38" rx="34" ry="43" fill="#f4ede2"/><circle class="paint" cx="0" cy="-37" r="48" fill="${fur}"/><ellipse class="paint" cx="-35" cy="85" rx="31" ry="19" fill="${fur}"/><ellipse class="paint" cx="35" cy="85" rx="31" ry="19" fill="${fur}"/>
     ${reaching ? '<path class="paint" d="M-35 25q-25 54-8 102l20-4q-10-48 10-83Z" fill="#c9c2d9"/>' : `<ellipse class="paint" cx="-48" cy="40" rx="17" ry="39" transform="rotate(18 -48 40)" fill="${fur}"/><ellipse class="paint" cx="48" cy="40" rx="17" ry="39" transform="rotate(-18 48 40)" fill="${fur}"/>`}
-    <ellipse cx="-18" cy="-42" rx="5" ry="7" fill="#344542" stroke="none"/><ellipse cx="18" cy="-42" rx="5" ry="7" fill="#344542" stroke="none"/><path d="M-6-24 0-19 6-24Z" fill="#d98286"/><path d="M0-19v7m0 0q-7 6-13 0m13 0q7 6 13 0M-8 30l16 19m-16 0L8 30" fill="none" stroke="#7b7590" stroke-dasharray="3 4"/>
+    <path d="M-28-64Q-18-71-8-64M8-64Q18-71 28-64" fill="none" stroke="#7d7494" stroke-width="3.5"/>
+    <ellipse class="paint" cx="-18" cy="-44" rx="13" ry="15" fill="#fff"/><ellipse class="paint" cx="18" cy="-44" rx="13" ry="15" fill="#fff"/>
+    <ellipse cx="-17" cy="-44" rx="8.5" ry="10" fill="#4b93b8" stroke="none"/><ellipse cx="17" cy="-44" rx="8.5" ry="10" fill="#4b93b8" stroke="none"/>
+    <ellipse cx="-17" cy="-44" rx="5" ry="6" fill="#233330" stroke="none"/><ellipse cx="17" cy="-44" rx="5" ry="6" fill="#233330" stroke="none"/>
+    <circle cx="-20" cy="-48" r="2.8" fill="#fff" stroke="none"/><circle cx="14" cy="-48" r="2.8" fill="#fff" stroke="none"/>
+    <ellipse class="paint" cx="-12" cy="-21" rx="17" ry="12" fill="#f4ede2"/><ellipse class="paint" cx="12" cy="-21" rx="17" ry="12" fill="#f4ede2"/>
+    <ellipse class="paint" cx="0" cy="-28" rx="8" ry="5.5" fill="#e4868e"/><path d="M0-22v6m0 0q-7 ${smileCurve}-13 0m13 0q7 ${smileCurve} 13 0M-8 30l16 19m-16 0L8 30" fill="none" stroke="#7b7590" stroke-dasharray="3 4"/>
     ${wet ? '<path d="M-43-62q-8 13 0 17 8-4 0-17ZM36 6q-8 13 0 17 8-4 0-17ZM-19 54q-8 13 0 17 8-4 0-17Z" class="paint" fill="#8bb8c7"/>' : ''}
   </g>`;
 }
 
 function owner() {
-  return `<g transform="translate(92 245) scale(.82)"><circle class="paint" cx="0" cy="-80" r="36" fill="#f2c7ad"/><path class="paint" d="M-36-84q0-49 38-42 35 4 32 45-17-4-31-27-20 22-39 24Z" fill="#d9b45f"/><path class="paint" d="M-27-38h54l25 104h-104Z" fill="#e99b68"/><path d="M-29-24-67 31M29-24 63 15M-23 65-29 132M23 65 31 132M-45 132h31M17 132h31" fill="none" stroke-width="9"/><circle cx="-12" cy="-82" r="3" fill="#40514f" stroke="none"/><circle cx="12" cy="-82" r="3" fill="#40514f" stroke="none"/><path d="M55-5h34M79-15l14 10-14 10" fill="none" stroke="#728f84" stroke-dasharray="5 6"/></g>`;
+  return `<g transform="translate(92 245) scale(.82)">
+    <circle class="paint" cx="-28" cy="-76" r="14" fill="#c4954a"/><circle class="paint" cx="28" cy="-76" r="14" fill="#c4954a"/>
+    <circle class="paint" cx="0" cy="-80" r="34" fill="#f6ccb0"/>
+    <path class="paint" d="M-34-84q0-42 36-38 33 4 32 39-16-4-30-21-19 18-38 20Z" fill="#c4954a"/>
+    <ellipse class="paint" cx="20" cy="-106" rx="9" ry="5" transform="rotate(-20 20 -106)" fill="#e3788b"/>
+    <path class="paint" d="M-26-38h52l24 102h-100Z" fill="#e88964"/>
+    <ellipse class="paint" cx="0" cy="-38" rx="18" ry="6" fill="#fff"/>
+    <path d="M-24-26-50 22M24-26 52 14M-18 64-22 128M18 64 22 128" fill="none" stroke="#f6ccb0" stroke-width="11"/>
+    <ellipse class="paint" cx="-25" cy="130" rx="12" ry="7" fill="#6d5044"/><ellipse class="paint" cx="25" cy="130" rx="12" ry="7" fill="#6d5044"/>
+    <circle cx="-11" cy="-80" r="3.5" fill="#2c3c39" stroke="none"/><circle cx="11" cy="-80" r="3.5" fill="#2c3c39" stroke="none"/>
+    <path d="M-7-68Q0-62 7-68" fill="none" stroke="#52454a" stroke-width="2.5"/>
+    <path d="M55-5h34M79-15l14 10-14 10" fill="none" stroke="#728f84" stroke-dasharray="5 6"/>
+  </g>`;
 }
 
 function cloudAndRain(heavy = false) {

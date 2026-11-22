@@ -54,7 +54,19 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
 
   const camera = new THREE.OrthographicCamera(-4, 4, 3.5, -3.5, 0.1, 60);
   camera.position.set(6.5, 4.6, 9);
-  camera.lookAt(0, 1.35, 0);
+  const defaultLookAt = new THREE.Vector3(0, 1.35, 0);
+  const currentLookAt = defaultLookAt.clone();
+  camera.lookAt(defaultLookAt);
+  let focusZoom = 1;
+  const focusLook = defaultLookAt.clone();
+  const setCameraFocus = (envelope, zoom = 1, look = [defaultLookAt.x, defaultLookAt.y, defaultLookAt.z]) => {
+    focusZoom = 1 + (zoom - 1) * envelope;
+    focusLook.set(
+      THREE.MathUtils.lerp(defaultLookAt.x, look[0], envelope),
+      THREE.MathUtils.lerp(defaultLookAt.y, look[1], envelope),
+      THREE.MathUtils.lerp(defaultLookAt.z, look[2], envelope),
+    );
+  };
 
   const hemisphere = new THREE.HemisphereLight(0xf3f8ff, 0x72836b, 2.3);
   scene.add(hemisphere);
@@ -73,14 +85,26 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
   scene.add(fill);
 
   const material = (color, options = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.82, ...options });
-  const makeMesh = (geometry, meshMaterial, parent, position = [0, 0, 0], scale = [1, 1, 1]) => {
+  const makeMesh = (geometry, meshMaterial, parent, position = [0, 0, 0], scale = [1, 1, 1], rotation) => {
     const object = new THREE.Mesh(geometry, meshMaterial);
     object.position.set(...position);
     object.scale.set(...scale);
+    if (rotation) object.rotation.set(...rotation);
     object.castShadow = true;
     object.receiveShadow = true;
     parent.add(object);
     return object;
+  };
+  const createCurvedLine = (points, radius, lineMaterial, parent) => {
+    const vectors = points.map((point) => new THREE.Vector3(...point));
+    const curve = new THREE.CatmullRomCurve3(vectors);
+    const group = new THREE.Group();
+    makeMesh(new THREE.TubeGeometry(curve, 16, radius, 10, false), lineMaterial, group);
+    const cap = new THREE.SphereGeometry(radius, 8, 8);
+    makeMesh(cap, lineMaterial, group, points[0]);
+    makeMesh(cap, lineMaterial, group, points[points.length - 1]);
+    parent.add(group);
+    return group;
   };
   const addHitArea = (parent, elementId, geometry, position) => {
     const hitArea = makeMesh(geometry, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }), parent, position);
@@ -132,6 +156,23 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
     makeMesh(new THREE.CylinderGeometry(0.13, 0.19, 1.8, 8), treeTrunk, scene, [x, 0.05, z], [size, size, size]);
     makeMesh(sphere, treeLeaf, scene, [x, 1.25, z], [0.85 * size, 1.15 * size, 0.8 * size]);
     makeMesh(sphere, treeLeaf, scene, [x + 0.42 * size, 1.1, z], [0.62 * size, 0.8 * size, 0.6 * size]);
+  });
+
+  // Cute park flowers around the grass
+  const flowerStemMat = material(0x6b9468);
+  const petalYellow = material(0xf6cf65);
+  const petalPink = material(0xeb94a4);
+  const flowerCenter = material(0xe39b4b);
+  [[-2.4, 0.75, petalYellow], [2.55, 0.65, petalPink], [-3.0, -0.45, petalPink], [2.2, -1.35, petalYellow]].forEach(([fx, fz, petalMat]) => {
+    const flower = new THREE.Group();
+    flower.position.set(fx, -0.76, fz);
+    makeMesh(new THREE.CylinderGeometry(0.02, 0.025, 0.26, 6), flowerStemMat, flower, [0, 0.13, 0]);
+    for (let p = 0; p < 5; p += 1) {
+      const angle = (p / 5) * Math.PI * 2;
+      makeMesh(sphere, petalMat, flower, [Math.cos(angle) * 0.075, 0.27, Math.sin(angle) * 0.075], [0.055, 0.03, 0.055]);
+    }
+    makeMesh(sphere, flowerCenter, flower, [0, 0.285, 0], [0.048, 0.035, 0.048]);
+    scene.add(flower);
   });
 
   const bench = new THREE.Group();
@@ -191,63 +232,113 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
   });
 
   const eyes = [];
+  const eyeWhite = material(0xffffff, { roughness: 0.3 });
+  const eyeBlue = material(0x4b93b8, { roughness: 0.28, emissive: 0x1b4b66, emissiveIntensity: 0.12 });
+  const browMat = material(0x7d7494, { roughness: 0.78 });
+  const blushMat = material(0xf2a5b0, { transparent: true, opacity: 0.42, roughness: 0.9 });
   [-1, 1].forEach((side) => {
-    const eye = makeMesh(sphere, dark, bunny, [side * 0.23, 1.65, 0.51], [0.068, 0.083, 0.045]);
+    const eye = new THREE.Group();
+    eye.position.set(side * 0.24, 1.66, 0.47);
+    eye.rotation.y = side * 0.2;
+    bunny.add(eye);
     eyes.push(eye);
-    makeMesh(sphere, cream, bunny, [side * 0.214, 1.68, 0.553], [0.018, 0.022, 0.012]);
-    makeMesh(sphere, pink, bunny, [side * 0.39, 1.43, 0.48], [0.1, 0.06, 0.025]);
-  });
-  makeMesh(sphere, noseMaterial, bunny, [0, 1.47, 0.58], [0.09, 0.065, 0.055]);
+    makeMesh(sphere, eyeWhite, eye, [0, 0, 0.01], [0.145, 0.16, 0.065]);
+    makeMesh(sphere, eyeBlue, eye, [side * -0.012, -0.005, 0.062], [0.095, 0.108, 0.026]);
+    makeMesh(sphere, dark, eye, [side * -0.012, -0.005, 0.078], [0.062, 0.074, 0.02]);
+    makeMesh(sphere, eyeWhite, eye, [side * -0.012 - 0.028, 0.036, 0.092], [0.026, 0.028, 0.012]);
+    makeMesh(sphere, eyeWhite, eye, [side * -0.012 + 0.026, -0.034, 0.092], [0.014, 0.014, 0.008]);
 
-  const mouthMaterial = new THREE.LineBasicMaterial({ color: C.dark, linewidth: 2 });
-  const mouthLeft = new THREE.QuadraticBezierCurve3(
-    new THREE.Vector3(0, 1.4, 0.593),
-    new THREE.Vector3(-0.035, 1.32, 0.59),
-    new THREE.Vector3(-0.13, 1.35, 0.56),
-  );
-  const mouthRight = new THREE.QuadraticBezierCurve3(
-    new THREE.Vector3(0, 1.4, 0.593),
-    new THREE.Vector3(0.035, 1.32, 0.59),
-    new THREE.Vector3(0.13, 1.35, 0.56),
-  );
-  [mouthLeft, mouthRight].forEach((curve) => {
-    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(12)), mouthMaterial);
-    bunny.add(line);
+    createCurvedLine(
+      [[side * 0.14, 1.88, 0.47], [side * 0.25, 1.91, 0.45], [side * 0.36, 1.87, 0.4]],
+      0.016,
+      browMat,
+      bunny,
+    );
+    makeMesh(sphere, blushMat, bunny, [side * 0.38, 1.44, 0.43], [0.1, 0.06, 0.025], [0, side * 0.52, 0]);
   });
+  // Soft cream plush cheeks & cute pink nose
+  makeMesh(sphere, cream, bunny, [-0.14, 1.41, 0.48], [0.18, 0.135, 0.12]);
+  makeMesh(sphere, cream, bunny, [0.14, 1.41, 0.48], [0.18, 0.135, 0.12]);
+  makeMesh(sphere, noseMaterial, bunny, [0, 1.49, 0.6], [0.095, 0.068, 0.055]);
+  makeMesh(sphere, eyeWhite, bunny, [-0.025, 1.512, 0.642], [0.02, 0.012, 0.008]);
+
+  // Cute plush bunny head tuft
+  makeMesh(sphere, fur, bunny, [-0.04, 2.13, 0.08], [0.08, 0.1, 0.07], [0.2, 0, 0.25]);
+  makeMesh(sphere, fur, bunny, [0.05, 2.12, 0.06], [0.065, 0.085, 0.06], [0.15, 0, -0.25]);
+
+  // Warm 3D bunny smile
+  const smileMat = material(0x52454a, { roughness: 0.6 });
+  createCurvedLine(
+    [[-0.14, 1.37, 0.565], [-0.065, 1.325, 0.595], [0, 1.34, 0.6], [0.065, 1.325, 0.595], [0.14, 1.37, 0.565]],
+    0.014,
+    smileMat,
+    bunny,
+  );
+  createCurvedLine([[0, 1.44, 0.605], [0, 1.34, 0.6]], 0.01, smileMat, bunny);
   const whiskerPoints = [];
   [-1, 1].forEach((side) => {
-    [-0.06, 0.06].forEach((dy) => {
+    [-0.04, 0.04].forEach((dy) => {
       whiskerPoints.push(
         new THREE.Vector3(side * 0.28, 1.43 + dy, 0.53),
-        new THREE.Vector3(side * 0.67, 1.44 + dy * 2, 0.43),
+        new THREE.Vector3(side * 0.65, 1.44 + dy * 1.8, 0.43),
       );
     });
   });
-  bunny.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(whiskerPoints), mouthMaterial));
+  bunny.add(new THREE.LineSegments(
+    new THREE.BufferGeometry().setFromPoints(whiskerPoints),
+    new THREE.LineBasicMaterial({ color: 0x5c535a, transparent: true, opacity: 0.65 }),
+  ));
 
   const owner = new THREE.Group();
   owner.userData.elementId = 'owner';
   owner.position.set(-2.05, -0.72, 0.25);
   owner.scale.setScalar(1.22);
   scene.add(owner);
-  const skin = material(0xefc3a5);
-  const hair = material(0xb28b4c);
-  const dress = material(0xdf8f63);
-  makeMesh(sphere, hair, owner, [0, 1.75, -0.04], [0.34, 0.36, 0.3]);
-  makeMesh(sphere, skin, owner, [0, 1.72, 0.12], [0.27, 0.28, 0.23]);
-  makeMesh(sphere, dark, owner, [-0.09, 1.76, 0.33], [0.018, 0.022, 0.014]);
-  makeMesh(sphere, dark, owner, [0.09, 1.76, 0.33], [0.018, 0.022, 0.014]);
-  makeMesh(new THREE.ConeGeometry(0.48, 0.95, 20), dress, owner, [0, 0.95, 0]);
+  const skin = material(0xf6ccb0, { roughness: 0.72 });
+  const hair = material(0xc4954a, { roughness: 0.8 });
+  const dress = material(0xe88964, { roughness: 0.76 });
+  const bowPink = material(0xe3788b, { roughness: 0.6 });
+  const shoeBrown = material(0x6d5044, { roughness: 0.75 });
+  // Head + cozy bob hair + pigtails + pink bow
+  makeMesh(sphere, hair, owner, [0, 1.78, -0.04], [0.35, 0.36, 0.31]);
+  makeMesh(sphere, hair, owner, [-0.28, 1.72, -0.05], [0.13, 0.16, 0.13]);
+  makeMesh(sphere, hair, owner, [0.28, 1.72, -0.05], [0.13, 0.16, 0.13]);
+  makeMesh(sphere, bowPink, owner, [0.22, 2.02, 0.08], [0.09, 0.06, 0.045], [0, 0, -0.35]);
+  makeMesh(sphere, skin, owner, [0, 1.72, 0.1], [0.28, 0.28, 0.24]);
+  // Cute bangs
+  makeMesh(sphere, hair, owner, [-0.11, 1.94, 0.22], [0.13, 0.085, 0.08], [0, 0, 0.25]);
+  makeMesh(sphere, hair, owner, [0.11, 1.94, 0.22], [0.13, 0.085, 0.08], [0, 0, -0.25]);
+  // Friendly eyes + blush + smile
+  [-1, 1].forEach((side) => {
+    makeMesh(sphere, dark, owner, [side * 0.095, 1.75, 0.32], [0.032, 0.038, 0.018]);
+    makeMesh(sphere, eyeWhite, owner, [side * 0.095 - 0.01, 1.762, 0.335], [0.011, 0.012, 0.008]);
+    makeMesh(sphere, blushMat, owner, [side * 0.165, 1.66, 0.28], [0.045, 0.026, 0.015]);
+  });
+  createCurvedLine([[-0.065, 1.63, 0.33], [0, 1.605, 0.342], [0.065, 1.63, 0.33]], 0.01, smileMat, owner);
+  // Warm dress with neck & white collar
+  makeMesh(new THREE.CylinderGeometry(0.065, 0.08, 0.2, 12), skin, owner, [0, 1.44, 0.04]);
+  makeMesh(new THREE.ConeGeometry(0.45, 0.96, 24), dress, owner, [0, 0.92, 0]);
+  makeMesh(sphere, eyeWhite, owner, [0, 1.37, 0.02], [0.16, 0.055, 0.15]);
   const ownerArms = [];
   const ownerLegs = [];
   [-1, 1].forEach((side) => {
-    const leg = makeMesh(new THREE.CylinderGeometry(0.055, 0.055, 0.55, 10), dark, owner, [side * 0.16, 0.25, 0]);
-    leg.rotation.z = side * 0.06;
+    const leg = new THREE.Group();
+    leg.position.set(side * 0.14, 0.45, 0);
+    leg.rotation.z = side * 0.04;
     leg.userData.baseRotation = leg.rotation.z;
+    owner.add(leg);
+    makeMesh(new THREE.CapsuleGeometry(0.055, 0.34, 6, 12), skin, leg, [0, -0.18, 0]);
+    makeMesh(sphere, shoeBrown, leg, [0, -0.39, 0.05], [0.085, 0.055, 0.12]);
     ownerLegs.push(leg);
-    const arm = makeMesh(new THREE.CylinderGeometry(0.055, 0.055, 0.65, 10), skin, owner, [side * 0.39, 1.03, 0]);
-    arm.rotation.z = side * -0.4;
+
+    const arm = new THREE.Group();
+    arm.position.set(side * 0.23, 1.28, 0.02);
+    arm.rotation.z = side * 0.36;
     arm.userData.baseRotation = arm.rotation.z;
+    owner.add(arm);
+    makeMesh(sphere, dress, arm, [0, -0.03, 0], [0.105, 0.11, 0.105]);
+    makeMesh(new THREE.CapsuleGeometry(0.05, 0.38, 6, 12), skin, arm, [0, -0.25, 0]);
+    makeMesh(sphere, skin, arm, [0, -0.46, 0], [0.068, 0.068, 0.062]);
     ownerArms.push(arm);
   });
   addHitArea(owner, 'owner', new THREE.BoxGeometry(1.1, 2.5, 0.35), [0, 0.85, -0.2]);
@@ -256,9 +347,15 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
   clouds.userData.elementId = 'cloud';
   clouds.position.set(0, 4.15, -0.7);
   scene.add(clouds);
-  const cloudMaterial = material(0xa9bdc7, { transparent: true, opacity: 0.95 });
-  [[-1.05, 0, 0, 0.85], [-0.4, 0.18, 0, 1], [0.38, 0.08, 0, 1.05], [1.12, -0.08, 0, 0.78]].forEach(([x, y, z, size]) => {
-    const puff = makeMesh(sphere, cloudMaterial, clouds, [x, y, z], [size, size * 0.56, size * 0.64]);
+  const cloudMaterial = material(0xcad6d8, { roughness: 0.92 });
+  [
+    [-1.12, -0.02, 0, 0.72],
+    [-0.55, 0.16, 0.06, 0.92],
+    [0.18, 0.22, -0.04, 0.98],
+    [0.86, 0.06, 0.05, 0.82],
+    [1.34, -0.08, 0, 0.58],
+  ].forEach(([x, y, z, size]) => {
+    const puff = makeMesh(sphere, cloudMaterial, clouds, [x, y, z], [size, size * 0.62, size * 0.66]);
     puff.castShadow = false;
   });
   addHitArea(clouds, 'cloud', new THREE.BoxGeometry(3.5, 1.25, 0.5), [0, 0, -0.2]);
@@ -439,7 +536,11 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
     return completed([
       pulseFocus({ duration: 1150 }),
       waveBunny(1100),
-      motion.wait(1100),
+      motion.tween({
+        duration: 1150,
+        ease: (value) => value,
+        update: (_, progress) => setCameraFocus(Math.sin(progress * Math.PI), 1.38, [0, 1.85, 0.25]),
+      }),
     ]);
   }
 
@@ -492,7 +593,8 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
         duration: 1350,
         ease: (value) => value,
         update: (_, progress) => {
-          arm.rotation.z = base + Math.sin(progress * Math.PI * 4) * 0.5 * Math.sin(progress * Math.PI);
+          const env = Math.sin(progress * Math.PI);
+          arm.rotation.z = base + (2.1 + Math.sin(progress * Math.PI * 4) * 0.35) * env;
         },
       }),
     ]);
@@ -554,6 +656,7 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
         duration: 1400,
         update: (value) => {
           bunny.rotation.y = Math.sin(value * Math.PI * 2) * 0.12;
+          setCameraFocus(Math.sin(value * Math.PI), 1.34, [0, 1.8, 0.25]);
         },
       }),
     ]);
@@ -696,7 +799,11 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
       motion.tween({
         duration: 1800,
         ease: (value) => value,
-        update: (_, progress) => { dropsFlash = Math.sin(progress * Math.PI) * 0.65; },
+        update: (_, progress) => {
+          const env = Math.sin(progress * Math.PI);
+          dropsFlash = env * 0.65;
+          setCameraFocus(env, 1.32, [0, 1.75, 0.25]);
+        },
       }),
     ]);
   }
@@ -727,6 +834,7 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
 
   function cancel() {
     motion.cancel();
+    setCameraFocus(0);
     focusMaterial.opacity = 0;
     arrowMaterial.opacity = 0;
     journeyMaterial.opacity = 0;
@@ -854,6 +962,10 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
 
     if (!document.hidden) {
       motion.tick(timelineDelta);
+      camera.zoom = THREE.MathUtils.damp(camera.zoom, focusZoom, 6, delta);
+      currentLookAt.lerp(focusLook, Math.min(1, delta * 6));
+      camera.lookAt(currentLookAt);
+      camera.updateProjectionMatrix();
       rainAmount = THREE.MathUtils.damp(rainAmount, rainEnabled ? 1 : 0, 5, delta);
       rainMaterial.opacity = rainAmount * 0.58;
       cloudMaterial.opacity = 0.55 + rainAmount * 0.4;
@@ -890,8 +1002,10 @@ export function createBunnyScene(container, { onElementClick = () => {}, onRainC
       wetAmount = THREE.MathUtils.damp(wetAmount, wetTarget, 3, delta);
       fur.color.lerpColors(baseFur, wetFur, wetAmount);
       dropsMaterial.opacity = Math.max(wetAmount * 0.75, dropsFlash);
+      const blink = !reducedMotion ? Math.max(0, 1 - Math.abs((time % 4.3) - 0.1) / 0.1) : 0;
       eyes.forEach((eye) => {
-        eye.scale.y = THREE.MathUtils.damp(eye.scale.y, sadTarget ? 0.06 : 0.083, 5, delta);
+        const targetEyeScale = (sadTarget ? 0.78 : 1) * (1 - blink * 0.9);
+        eye.scale.y = THREE.MathUtils.damp(eye.scale.y, targetEyeScale, 12, delta);
       });
       rings.forEach((ring) => {
         const phase = ((time * 0.55 + ring.userData.offset) % 2.4) / 2.4;

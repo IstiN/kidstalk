@@ -7,6 +7,24 @@
     <path d="M174 185Q322 172 470 185M178 222Q322 210 466 222M174 288Q322 278 472 288M157 405h38M451 405h38" fill="none" stroke="#bd874f"/>
   </g><g transform="translate(340 263)"><ellipse class="paint" cx="-25" cy="-116" rx="19" ry="61" transform="rotate(-8 -25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="25" cy="-116" rx="19" ry="61" transform="rotate(8 25 -116)" fill="#c9c2d9"/><ellipse class="paint" cx="-25" cy="-117" rx="8" ry="40" transform="rotate(-8 -25 -117)" fill="#e8b4b8"/><ellipse class="paint" cx="25" cy="-117" rx="8" ry="40" transform="rotate(8 25 -117)" fill="#e8b4b8"/><ellipse class="paint" cx="0" cy="35" rx="54" ry="65" fill="#c9c2d9"/><ellipse class="paint" cx="0" cy="38" rx="34" ry="43" fill="#f4ede2"/><circle class="paint" cx="0" cy="-37" r="48" fill="#c9c2d9"/><ellipse class="paint" cx="-35" cy="85" rx="31" ry="19" fill="#c9c2d9"/><ellipse class="paint" cx="35" cy="85" rx="31" ry="19" fill="#c9c2d9"/>
     <ellipse class="paint" cx="-48" cy="40" rx="17" ry="39" transform="rotate(18 -48 40)" fill="#c9c2d9"/><ellipse class="paint" cx="48" cy="40" rx="17" ry="39" transform="rotate(-18 48 40)" fill="#c9c2d9"/>
-    <ellipse cx="-18" cy="-42" rx="5" ry="7" fill="#344542" stroke="none"/><ellipse cx="18" cy="-42" rx="5" ry="7" fill="#344542" stroke="none"/><path d="M-6-24 0-19 6-24Z" fill="#d98286"/><path d="M0-19v7m0 0q-7 6-13 0m13 0q7 6 13 0M-8 30l16 19m-16 0L8 30" fill="none" stroke="#7b7590" stroke-dasharray="3 4"/>
+    <path d="M-28-64Q-18-71-8-64M8-64Q18-71 28-64" fill="none" stroke="#7d7494" stroke-width="3.5"/>
+    <ellipse class="paint" cx="-18" cy="-44" rx="13" ry="15" fill="#fff"/><ellipse class="paint" cx="18" cy="-44" rx="13" ry="15" fill="#fff"/>
+    <ellipse cx="-17" cy="-44" rx="8.5" ry="10" fill="#4b93b8" stroke="none"/><ellipse cx="17" cy="-44" rx="8.5" ry="10" fill="#4b93b8" stroke="none"/>
+    <ellipse cx="-17" cy="-44" rx="5" ry="6" fill="#233330" stroke="none"/><ellipse cx="17" cy="-44" rx="5" ry="6" fill="#233330" stroke="none"/>
+    <circle cx="-20" cy="-48" r="2.8" fill="#fff" stroke="none"/><circle cx="14" cy="-48" r="2.8" fill="#fff" stroke="none"/>
+    <ellipse class="paint" cx="-12" cy="-21" rx="17" ry="12" fill="#f4ede2"/><ellipse class="paint" cx="12" cy="-21" rx="17" ry="12" fill="#f4ede2"/>
+    <ellipse class="paint" cx="0" cy="-28" rx="8" ry="5.5" fill="#e4868e"/><path d="M0-22v6m0 0q-7 6-13 0m13 0q7 6 13 0M-8 30l16 19m-16 0L8 30" fill="none" stroke="#7b7590" stroke-dasharray="3 4"/>
     
-  </g><g transform="translate(92 245) scale(.82)"><circle class="paint" cx="0" cy="-80" r="36" fill="#f2c7ad"/><path class="paint" d="M-36-84q0-49 38-42 35 4 32 45-17-4-31-27-20 22-39 24Z" fill="#d9b45f"/><path class="paint" d="M-27-38h54l25 104h-104Z" fill="#e99b68"/><path d="M-29-24-67 31M29-24 63 15M-23 65-29 132M23 65 31 132M-45 132h31M17 132h31" fill="none" stroke-width="9"/><circle cx="-12" cy="-82" r="3" fill="#40514f" stroke="none"/><circle cx="12" cy="-82" r="3" fill="#40514f" stroke="none"/><path d="M55-5h34M79-15l14 10-14 10" fill="none" stroke="#728f84" stroke-dasharray="5 6"/></g><path class="paint" d="M520 62a28 28 0 1 1 28 28" fill="#f1ca70"/></g></svg>
+  </g><g transform="translate(92 245) scale(.82)">
+    <circle class="paint" cx="-28" cy="-76" r="14" fill="#c4954a"/><circle class="paint" cx="28" cy="-76" r="14" fill="#c4954a"/>
+    <circle class="paint" cx="0" cy="-80" r="34" fill="#f6ccb0"/>
+    <path class="paint" d="M-34-84q0-42 36-38 33 4 32 39-16-4-30-21-19 18-38 20Z" fill="#c4954a"/>
+    <ellipse class="paint" cx="20" cy="-106" rx="9" ry="5" transform="rotate(-20 20 -106)" fill="#e3788b"/>
+    <path class="paint" d="M-26-38h52l24 102h-100Z" fill="#e88964"/>
+    <ellipse class="paint" cx="0" cy="-38" rx="18" ry="6" fill="#fff"/>
+    <path d="M-24-26-50 22M24-26 52 14M-18 64-22 128M18 64 22 128" fill="none" stroke="#f6ccb0" stroke-width="11"/>
+    <ellipse class="paint" cx="-25" cy="130" rx="12" ry="7" fill="#6d5044"/><ellipse class="paint" cx="25" cy="130" rx="12" ry="7" fill="#6d5044"/>
+    <circle cx="-11" cy="-80" r="3.5" fill="#2c3c39" stroke="none"/><circle cx="11" cy="-80" r="3.5" fill="#2c3c39" stroke="none"/>
+    <path d="M-7-68Q0-62 7-68" fill="none" stroke="#52454a" stroke-width="2.5"/>
+    <path d="M55-5h34M79-15l14 10-14 10" fill="none" stroke="#728f84" stroke-dasharray="5 6"/>
+  </g><path class="paint" d="M520 62a28 28 0 1 1 28 28" fill="#f1ca70"/></g></svg>

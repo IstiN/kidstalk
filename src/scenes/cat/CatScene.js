@@ -4,79 +4,132 @@ import { TweenManager } from '../core/TweenManager.js';
 const damp = THREE.MathUtils.damp;
 const material = (color, options = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, ...options });
 
-function makeMesh(geometry, meshMaterial, parent, position, scale) {
+function makeMesh(geometry, meshMaterial, parent, position, scale, rotation) {
   const mesh = new THREE.Mesh(geometry, meshMaterial);
   if (position) mesh.position.set(...position);
   if (scale) mesh.scale.set(...scale);
+  if (rotation) mesh.rotation.set(...rotation);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   parent.add(mesh);
   return mesh;
 }
 
+function createCurvedLine(points, radius, lineMaterial, parent) {
+  const vectors = points.map((point) => new THREE.Vector3(...point));
+  const curve = new THREE.CatmullRomCurve3(vectors);
+  const group = new THREE.Group();
+  makeMesh(new THREE.TubeGeometry(curve, 18, radius, 10, false), lineMaterial, group);
+  const cap = new THREE.SphereGeometry(radius, 8, 8);
+  makeMesh(cap, lineMaterial, group, points[0]);
+  makeMesh(cap, lineMaterial, group, points[points.length - 1]);
+  parent.add(group);
+  return group;
+}
+
 function createCat({ color, accent, elementId }) {
   const group = new THREE.Group();
   group.userData.elementId = elementId;
-  const fur = material(color);
-  const furLight = material(new THREE.Color(color).lerp(new THREE.Color(0xfff2df), 0.42));
-  const stripe = material(accent);
-  const pink = material(0xe8a7a0);
-  const dark = material(0x34443f);
-  const eyeGreen = material(0x7f9c75);
-  const sphere = new THREE.SphereGeometry(1, 28, 20);
+  const fur = material(color, { roughness: 0.84 });
+  const furLight = material(new THREE.Color(color).lerp(new THREE.Color(0xfff6ea), 0.52), { roughness: 0.84 });
+  const stripe = material(accent, { roughness: 0.84 });
+  const pink = material(0xf29aa6, { roughness: 0.62 });
+  const white = material(0xffffff, { roughness: 0.3 });
+  const dark = material(0x1f2b27, { roughness: 0.25 });
+  const smileDark = material(0x5a433d, { roughness: 0.65 });
+  const eyeRing = material(0x3a8243, { roughness: 0.35 });
+  const eyeGreen = material(0x5cc460, { roughness: 0.25, emissive: 0x205825, emissiveIntensity: 0.12 });
+  const blushMat = material(0xf5a6b0, { transparent: true, opacity: 0.38, roughness: 0.9 });
+  const sphere = new THREE.SphereGeometry(1, 32, 24);
 
   const body = makeMesh(sphere, fur, group, [0, 0.74, 0], [0.56, 0.72, 0.48]);
   body.userData.baseScaleY = body.scale.y;
   makeMesh(sphere, furLight, group, [0, 0.67, 0.43], [0.36, 0.47, 0.08]);
 
   const head = new THREE.Group();
-  head.position.set(0, 1.38, 0.03);
+  head.position.set(0, 1.4, 0.03);
   group.add(head);
-  makeMesh(sphere, fur, head, [0, 0.14, 0], [0.52, 0.48, 0.45]);
-  makeMesh(sphere, furLight, head, [0, -0.02, 0.38], [0.28, 0.19, 0.1]);
+  makeMesh(sphere, fur, head, [0, 0.14, 0], [0.56, 0.5, 0.48]);
+  // Cute little plush head tuft
+  makeMesh(sphere, fur, head, [-0.04, 0.62, 0.05], [0.075, 0.095, 0.065], [0.2, 0, 0.25]);
+  makeMesh(sphere, fur, head, [0.05, 0.61, 0.04], [0.065, 0.08, 0.055], [0.15, 0, -0.3]);
 
+  // Soft rounded plush cat ears
   const ears = [];
   [-1, 1].forEach((side) => {
-    const ear = makeMesh(new THREE.ConeGeometry(0.23, 0.5, 4), fur, head, [side * 0.31, 0.59, -0.02]);
-    ear.rotation.y = Math.PI / 4;
-    ear.rotation.z = side * -0.08;
+    const ear = new THREE.Group();
+    ear.position.set(side * 0.34, 0.55, -0.02);
+    ear.rotation.z = side * -0.24;
+    ear.rotation.y = side * 0.14;
     ear.userData.baseRotation = ear.rotation.z;
+    head.add(ear);
     ears.push(ear);
-    const inner = makeMesh(new THREE.ConeGeometry(0.12, 0.3, 4), pink, head, [side * 0.31, 0.59, 0.1]);
-    inner.rotation.y = Math.PI / 4;
-    inner.rotation.z = side * -0.08;
-    makeMesh(sphere, eyeGreen, head, [side * 0.18, 0.2, 0.42], [0.072, 0.084, 0.035]);
-    makeMesh(sphere, dark, head, [side * 0.18, 0.2, 0.456], [0.026, 0.06, 0.018]);
-    makeMesh(sphere, furLight, head, [side * 0.36, 0.02, 0.36], [0.13, 0.1, 0.06]);
-  });
-  makeMesh(sphere, pink, head, [0, 0.04, 0.49], [0.065, 0.047, 0.035]);
-  [-0.09, 0, 0.09].forEach((x) => {
-    const mark = makeMesh(new THREE.BoxGeometry(0.035, 0.14, 0.025), stripe, head, [x, 0.43, 0.4]);
-    mark.rotation.z = x * 1.8;
+    makeMesh(sphere, fur, ear, [0, 0.06, 0], [0.2, 0.29, 0.14]);
+    makeMesh(sphere, fur, ear, [0, 0.22, 0], [0.11, 0.14, 0.09]);
+    makeMesh(sphere, pink, ear, [0, 0.06, 0.08], [0.115, 0.18, 0.065]);
   });
 
-  const mouthPoints = [
-    new THREE.Vector3(0, 0, 0.49), new THREE.Vector3(0, -0.06, 0.49),
-    new THREE.Vector3(0, -0.06, 0.49), new THREE.Vector3(-0.08, -0.1, 0.47),
-    new THREE.Vector3(0, -0.06, 0.49), new THREE.Vector3(0.08, -0.1, 0.47),
-  ];
-  head.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(mouthPoints), new THREE.LineBasicMaterial({ color: 0x66554e })));
+  // Big warm expressive eyes + eyebrows + rosy cheeks
+  const eyes = [];
+  [-1, 1].forEach((side) => {
+    const eye = new THREE.Group();
+    eye.position.set(side * 0.19, 0.21, 0.39);
+    eye.rotation.y = side * 0.2;
+    head.add(eye);
+    eyes.push(eye);
+    makeMesh(sphere, white, eye, [0, 0, 0.01], [0.145, 0.16, 0.06]);
+    makeMesh(sphere, eyeRing, eye, [side * -0.014, -0.006, 0.055], [0.098, 0.11, 0.024]);
+    makeMesh(sphere, eyeGreen, eye, [side * -0.014, -0.006, 0.066], [0.086, 0.098, 0.02]);
+    makeMesh(sphere, dark, eye, [side * -0.014, -0.006, 0.077], [0.054, 0.065, 0.016]);
+    makeMesh(sphere, white, eye, [side * -0.014 - 0.03, 0.036, 0.09], [0.025, 0.028, 0.01]);
+    makeMesh(sphere, white, eye, [side * -0.014 + 0.026, -0.036, 0.09], [0.013, 0.013, 0.008]);
+
+    createCurvedLine(
+      [[side * 0.1, 0.41, 0.4], [side * 0.2, 0.44, 0.38], [side * 0.3, 0.4, 0.34]],
+      0.015,
+      stripe,
+      head,
+    );
+    makeMesh(sphere, blushMat, head, [side * 0.31, 0.02, 0.35], [0.072, 0.044, 0.022], [0, side * 0.55, 0]);
+  });
+
+  // Plush muzzle cheeks + chin + pink nose + warm cat smile
+  makeMesh(sphere, furLight, head, [-0.125, -0.02, 0.41], [0.185, 0.14, 0.125]);
+  makeMesh(sphere, furLight, head, [0.125, -0.02, 0.41], [0.185, 0.14, 0.125]);
+  makeMesh(sphere, furLight, head, [0, -0.11, 0.39], [0.16, 0.1, 0.11]);
+  makeMesh(sphere, pink, head, [0, 0.055, 0.525], [0.082, 0.058, 0.048]);
+  makeMesh(sphere, white, head, [-0.022, 0.078, 0.562], [0.018, 0.011, 0.008]);
+
+  createCurvedLine(
+    [[-0.135, -0.07, 0.495], [-0.062, -0.112, 0.522], [0, -0.098, 0.525], [0.062, -0.112, 0.522], [0.135, -0.07, 0.495]],
+    0.013,
+    smileDark,
+    head,
+  );
+  createCurvedLine([[0, 0.005, 0.53], [0, -0.095, 0.525]], 0.009, smileDark, head);
+
   const whiskerPoints = [];
   [-1, 1].forEach((side) => {
-    [-0.06, 0.04].forEach((y) => {
-      whiskerPoints.push(new THREE.Vector3(side * 0.22, y, 0.43), new THREE.Vector3(side * 0.58, y + 0.04, 0.42));
+    [-0.03, 0.03].forEach((y, index) => {
+      whiskerPoints.push(
+        new THREE.Vector3(side * 0.24, y, 0.46),
+        new THREE.Vector3(side * 0.54, y + (index === 0 ? -0.02 : 0.04), 0.38),
+      );
     });
   });
-  head.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(whiskerPoints), new THREE.LineBasicMaterial({ color: 0x7c7167 })));
+  head.add(new THREE.LineSegments(
+    new THREE.BufferGeometry().setFromPoints(whiskerPoints),
+    new THREE.LineBasicMaterial({ color: 0x7c7167, transparent: true, opacity: 0.65 }),
+  ));
   if (elementId === 'mom') {
-    const bowMaterial = material(0xc98388);
-    makeMesh(sphere, bowMaterial, head, [-0.48, 0.48, 0.25], [0.14, 0.09, 0.06]);
-    makeMesh(sphere, bowMaterial, head, [-0.25, 0.48, 0.25], [0.14, 0.09, 0.06]);
-    makeMesh(sphere, bowMaterial, head, [-0.365, 0.48, 0.29], [0.065, 0.065, 0.05]);
+    const bowMaterial = material(0xe38492, { roughness: 0.6 });
+    makeMesh(sphere, bowMaterial, head, [-0.45, 0.44, 0.12], [0.12, 0.08, 0.055], [0, 0.2, 0.15]);
+    makeMesh(sphere, bowMaterial, head, [-0.25, 0.44, 0.12], [0.12, 0.08, 0.055], [0, -0.2, -0.15]);
+    makeMesh(sphere, bowMaterial, head, [-0.35, 0.44, 0.16], [0.06, 0.06, 0.045]);
   }
 
   const pawMaterial = fur.clone();
-  const pawGeometry = new THREE.CapsuleGeometry(0.12, 0.6, 5, 12);
+  const pawGeometry = new THREE.CapsuleGeometry(0.115, 0.56, 8, 16);
   let leftPaw;
   let rightPaw;
   [-1, 1].forEach((side) => {
@@ -92,21 +145,24 @@ function createCat({ color, accent, elementId }) {
     else rightPaw = paw;
   });
   rightPaw.userData.elementId = 'paw';
-  makeMesh(sphere, fur, group, [-0.35, 0.1, 0.34], [0.31, 0.18, 0.39]);
-  makeMesh(sphere, fur, group, [0.35, 0.1, 0.34], [0.31, 0.18, 0.39]);
+  makeMesh(sphere, fur, group, [-0.34, 0.11, 0.34], [0.29, 0.17, 0.37]);
+  makeMesh(sphere, fur, group, [0.34, 0.11, 0.34], [0.29, 0.17, 0.37]);
+  makeMesh(sphere, pink, group, [-0.34, 0.1, 0.67], [0.12, 0.09, 0.04]);
+  makeMesh(sphere, pink, group, [0.34, 0.1, 0.67], [0.12, 0.09, 0.04]);
 
   const tail = new THREE.Group();
-  tail.position.set(0.4, 0.38, -0.25);
+  tail.position.set(0.32, 0.36, -0.28);
   const tailCurve = new THREE.CatmullRomCurve3([
     new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(0.46, 0.1, 0.05),
-    new THREE.Vector3(0.53, 0.54, 0.15),
-    new THREE.Vector3(0.32, 0.75, 0.27),
+    new THREE.Vector3(0.42, 0.08, -0.12),
+    new THREE.Vector3(0.54, 0.48, -0.05),
+    new THREE.Vector3(0.38, 0.72, 0.02),
   ]);
-  makeMesh(new THREE.TubeGeometry(tailCurve, 28, 0.085, 10, false), fur, tail);
+  makeMesh(new THREE.TubeGeometry(tailCurve, 28, 0.085, 12, false), fur, tail);
+  makeMesh(sphere, fur, tail, [0.38, 0.72, 0.02], [0.088, 0.088, 0.088]);
   group.add(tail);
 
-  return { group, body, head, ears, leftPaw, rightPaw, tail };
+  return { group, body, head, ears, eyes, leftPaw, rightPaw, tail };
 }
 
 export function createCatScene(container, { onElementClick = () => {} } = {}) {
@@ -141,7 +197,19 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
   scene.fog = new THREE.Fog(0xf3eee4, 10, 23);
   const camera = new THREE.OrthographicCamera(-3, 3, 3, -3, 0.1, 60);
   camera.position.set(4.1, 2.75, 7.7);
-  camera.lookAt(0, 0.7, 0);
+  const defaultLookAt = new THREE.Vector3(0, 0.7, 0);
+  const currentLookAt = defaultLookAt.clone();
+  camera.lookAt(defaultLookAt);
+  let focusZoom = 1;
+  let focusLook = defaultLookAt.clone();
+  function setCameraFocus(envelope, zoom = 1, look = [defaultLookAt.x, defaultLookAt.y, defaultLookAt.z]) {
+    focusZoom = 1 + (zoom - 1) * envelope;
+    focusLook.set(
+      THREE.MathUtils.lerp(defaultLookAt.x, look[0], envelope),
+      THREE.MathUtils.lerp(defaultLookAt.y, look[1], envelope),
+      THREE.MathUtils.lerp(defaultLookAt.z, look[2], envelope),
+    );
+  }
 
   scene.add(new THREE.HemisphereLight(0xfff8eb, 0xb2bba6, 2.15));
   const sunlight = new THREE.DirectionalLight(0xffefd3, 3.1);
@@ -166,11 +234,16 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
   windowGroup.userData.elementId = 'window';
   windowGroup.position.set(-2.15, 2.05, -2.85);
   scene.add(windowGroup);
-  const frameMaterial = material(0xf8f1e5);
-  makeMesh(new THREE.BoxGeometry(1.75, 1.5, 0.08), material(0xaecfd7, { emissive: 0x5c8b9b, emissiveIntensity: 0.08 }), windowGroup);
-  makeMesh(new THREE.SphereGeometry(1, 20, 14), material(0xa6bf98), windowGroup, [-0.48, -0.52, 0.08], [0.72, 0.32, 0.06]);
-  makeMesh(new THREE.SphereGeometry(1, 20, 14), material(0x91b18b), windowGroup, [0.5, -0.52, 0.08], [0.7, 0.28, 0.06]);
-  const sun = makeMesh(new THREE.SphereGeometry(1, 24, 16), material(0xf1ca70, { emissive: 0xe6ae43, emissiveIntensity: 0.28 }), windowGroup, [0.42, 0.35, 0.13], [0.23, 0.23, 0.08]);
+  const frameMaterial = material(0xfaf4ea);
+  makeMesh(new THREE.BoxGeometry(1.75, 1.5, 0.08), material(0xb6dce5, { emissive: 0x6296a6, emissiveIntensity: 0.1 }), windowGroup);
+  // Hills tucked cleanly inside the window frame
+  makeMesh(new THREE.SphereGeometry(1, 20, 14), material(0xa2c493), windowGroup, [-0.34, -0.52, 0.06], [0.48, 0.24, 0.04]);
+  makeMesh(new THREE.SphereGeometry(1, 20, 14), material(0x8bb684), windowGroup, [0.34, -0.54, 0.06], [0.46, 0.22, 0.04]);
+  // Fluffy little cloud in the sky
+  const cloudMat = material(0xffffff, { roughness: 0.9 });
+  makeMesh(new THREE.SphereGeometry(1, 16, 12), cloudMat, windowGroup, [-0.42, 0.36, 0.07], [0.22, 0.12, 0.03]);
+  makeMesh(new THREE.SphereGeometry(1, 16, 12), cloudMat, windowGroup, [-0.26, 0.4, 0.07], [0.16, 0.11, 0.03]);
+  const sun = makeMesh(new THREE.SphereGeometry(1, 24, 16), material(0xf6cf6a, { emissive: 0xe6ae43, emissiveIntensity: 0.32 }), windowGroup, [0.42, 0.36, 0.09], [0.21, 0.21, 0.05]);
   [-0.91, 0.91].forEach((x) => makeMesh(new THREE.BoxGeometry(0.12, 1.7, 0.15), frameMaterial, windowGroup, [x, 0, 0.14]));
   [-0.8, 0.8].forEach((y) => makeMesh(new THREE.BoxGeometry(1.94, 0.12, 0.15), frameMaterial, windowGroup, [0, y, 0.14]));
   makeMesh(new THREE.BoxGeometry(0.08, 1.5, 0.12), frameMaterial, windowGroup, [0, 0, 0.14]);
@@ -202,11 +275,11 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
   const stripeTwo = makeMesh(new THREE.TorusGeometry(0.235, 0.025, 8, 40), ballStripe, ball);
   stripeTwo.rotation.y = Math.PI / 2;
 
-  const cat = createCat({ color: 0xdca36e, accent: 0xa8734c, elementId: 'cat' });
+  const cat = createCat({ color: 0xe8a468, accent: 0xb87643, elementId: 'cat' });
   cat.group.position.set(-1.25, -0.76, 0.4);
   cat.group.userData.baseY = -0.76;
   scene.add(cat.group);
-  const mom = createCat({ color: 0xbeb3a5, accent: 0x8f8176, elementId: 'mom' });
+  const mom = createCat({ color: 0xcabdae, accent: 0x998b7c, elementId: 'mom' });
   mom.group.position.set(3.95, -0.76, 0.45);
   mom.group.scale.setScalar(1.36);
   mom.tail.scale.x = -1;
@@ -292,7 +365,16 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
 
   async function focusCat() {
     sadTarget = 0;
-    return completed([hopActor(cat, 1000), wavePaw(cat, 1100), pulseFocus({ x: cat.group.position.x, z: 0.4, duration: 1150 })]);
+    return completed([
+      hopActor(cat, 1000),
+      wavePaw(cat, 1100),
+      pulseFocus({ x: cat.group.position.x, z: 0.4, duration: 1150 }),
+      motion.tween({
+        duration: 1150,
+        ease: (value) => value,
+        update: (_, progress) => setCameraFocus(Math.sin(progress * Math.PI), 1.38, [cat.group.position.x + 0.1, 0.65, 0.4]),
+      }),
+    ]);
   }
 
   async function findBall() {
@@ -403,7 +485,10 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
     const shaken = await motion.tween({
       duration: 900,
       ease: (value) => value,
-      update: (_, progress) => { cat.head.rotation.y = Math.sin(progress * Math.PI * 4) * 0.2 * (1 - progress); },
+      update: (_, progress) => {
+        cat.head.rotation.y = Math.sin(progress * Math.PI * 4) * 0.2 * (1 - progress);
+        setCameraFocus(Math.sin(progress * 0.5 * Math.PI), 1.32, [cat.group.position.x + 0.35, 0.55, 0.3]);
+      },
     });
     if (!shaken) return false;
     const paw = cat.rightPaw;
@@ -417,6 +502,7 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
         paw.position.z = THREE.MathUtils.lerp(base.z + 0.08, base.z, value);
         paw.rotation.z = THREE.MathUtils.lerp(baseRotation - 0.18, baseRotation, value);
         cat.head.rotation.x = THREE.MathUtils.lerp(0.18, 0, value);
+        setCameraFocus(1 - value, 1.32, [cat.group.position.x + 0.35, 0.55, 0.3]);
       },
     });
   }
@@ -491,6 +577,11 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
       bounceBall(1300),
       wavePaw(cat, 1200),
       pulseFocus({ x: cat.group.position.x, z: 0.5, scale: 0.9, duration: 1400 }),
+      motion.tween({
+        duration: 1400,
+        ease: (value) => value,
+        update: (_, progress) => setCameraFocus(Math.sin(progress * Math.PI), 1.25, [0.45, 0.58, 0.5]),
+      }),
     ]);
   }
 
@@ -534,12 +625,13 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
 
   function cancel() {
     motion.cancel();
+    setCameraFocus(0);
     focusMaterial.opacity = 0;
     sparkleMaterial.opacity = 0;
     cat.rightPaw.material.emissiveIntensity = 0;
     wood.emissiveIntensity = 0;
     woodLight.emissiveIntensity = 0;
-    sun.scale.set(0.23, 0.23, 0.08);
+    sun.scale.set(0.21, 0.21, 0.05);
     sunlight.intensity = 3.1;
   }
 
@@ -640,10 +732,20 @@ export function createCatScene(container, { onElementClick = () => {} } = {}) {
       motion.tick(timelineDelta);
       const time = now / 1000;
       sadAmount = damp(sadAmount, sadTarget, 4, delta);
+      camera.zoom = damp(camera.zoom, focusZoom, 6, delta);
+      currentLookAt.lerp(focusLook, Math.min(1, delta * 6));
+      camera.lookAt(currentLookAt);
+      camera.updateProjectionMatrix();
       cat.body.scale.y = cat.body.userData.baseScaleY * (1 + Math.sin(time * 1.8) * 0.008);
       mom.body.scale.y = mom.body.userData.baseScaleY * (1 + Math.sin(time * 1.7 + 1) * 0.008);
       cat.tail.rotation.y = reducedMotion ? 0 : Math.sin(time * 2.2) * 0.2;
       mom.tail.rotation.y = reducedMotion ? 0 : Math.sin(time * 1.9 + 1) * 0.16 * (1 - momTailAction);
+      if (!reducedMotion) {
+        const catBlink = Math.max(0, 1 - Math.abs((time % 4.4) - 0.1) / 0.1);
+        const momBlink = Math.max(0, 1 - Math.abs(((time + 1.7) % 4.8) - 0.1) / 0.1);
+        cat.eyes.forEach((eye) => { eye.scale.y = 1 - catBlink * 0.9; });
+        mom.eyes.forEach((eye) => { eye.scale.y = 1 - momBlink * 0.9; });
+      }
       cat.ears.forEach((ear) => {
         const side = Math.sign(ear.userData.baseRotation || 0.01);
         ear.rotation.z = damp(ear.rotation.z, ear.userData.baseRotation + side * sadAmount * 0.2, 4, delta);
