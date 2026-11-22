@@ -88,29 +88,35 @@ function tomCharacter(line) {
   ][line];
   const [[leftX, leftY], [rightX, rightY]] = armEnds;
   return `<g transform="translate(320 ${line === 0 ? 220 : 235})">
-    <path d="M45 70C125 70 120 145 80 135 55 129 73 105 94 116" fill="none" stroke="#777d82" stroke-width="20"/>
-    <path d="M-25 105-35 170M25 105 35 170" fill="none" stroke="#656c72" stroke-width="25"/>
-    <ellipse class="paint" cx="-43" cy="180" rx="31" ry="16" fill="#f4f0e9"/><ellipse class="paint" cx="43" cy="180" rx="31" ry="16" fill="#f4f0e9"/>
-    <path d="M-45 20Q${leftX} ${leftY - 15} ${leftX} ${leftY}M45 20Q${rightX} ${rightY - 15} ${rightX} ${rightY}" fill="none" stroke="#777d82" stroke-width="25"/>
-    <circle class="paint" cx="${leftX}" cy="${leftY}" r="16" fill="#777d82"/><circle class="paint" cx="${rightX}" cy="${rightY}" r="16" fill="#777d82"/>
-    <ellipse class="paint" cx="0" cy="62" rx="61" ry="78" fill="#d95f58"/><ellipse class="paint" cx="0" cy="65" rx="32" ry="48" fill="#f4f0e9"/>
-    <path d="M-29-2Q0 22 29-2" fill="none" stroke="#f4f0e9" stroke-width="10"/><circle cx="-12" cy="35" r="4" fill="#f4f0e9" stroke="none"/><circle cx="12" cy="35" r="4" fill="#f4f0e9" stroke="none"/>
-    <path class="paint" d="M-65-104-68-176-21-130M65-104 68-176 21-130" fill="#777d82"/>
-    <path class="paint" d="M-55-119-58-155-34-132M55-119 58-155 34-132" fill="#e9939b"/>
-    <ellipse class="paint" cx="0" cy="-67" rx="82" ry="72" fill="#777d82"/>
-    <ellipse class="paint" cx="-29" cy="-76" rx="24" ry="29" fill="#f4f0e9"/><ellipse class="paint" cx="29" cy="-76" rx="24" ry="29" fill="#f4f0e9"/>
-    <ellipse cx="-29" cy="-75" rx="14" ry="20" fill="#6ea86c" stroke="none"/><ellipse cx="29" cy="-75" rx="14" ry="20" fill="#6ea86c" stroke="none"/>
-    <ellipse cx="-29" cy="-75" rx="6" ry="14" fill="#243832" stroke="none"/><ellipse cx="29" cy="-75" rx="6" ry="14" fill="#243832" stroke="none"/>
-    <circle cx="-34" cy="-84" r="5" fill="#fff" stroke="none"/><circle cx="24" cy="-84" r="5" fill="#fff" stroke="none"/>
-    <ellipse class="paint" cx="-20" cy="-39" rx="31" ry="23" fill="#f4f0e9"/><ellipse class="paint" cx="20" cy="-39" rx="31" ry="23" fill="#f4f0e9"/>
-    <path class="paint" d="M-14-50Q0-60 14-50L0-38Z" fill="#e9939b"/>
-    <path d="M0-38v10m0 0q-20 20-34 0m34 0q20 20 34 0M-48-38-91-44M-48-27-90-19M48-38 91-44M48-27 90-19" fill="none"/>
-    <path d="M-20-125-15-108M0-130v22M20-125 15-108" fill="none" stroke="#565d63" stroke-width="7"/>
+    <path d="M45 70C125 70 120 145 80 135 55 129 73 105 94 116" fill="none" stroke="#9d968e" stroke-width="20"/>
+    <path d="M-25 105-33 170M25 105 33 170" fill="none" stroke="#9d968e" stroke-width="25"/>
+    <ellipse class="paint" cx="-41" cy="180" rx="31" ry="16" fill="#fff"/><ellipse class="paint" cx="41" cy="180" rx="31" ry="16" fill="#fff"/>
+    <ellipse class="paint" cx="-41" cy="177" rx="18" ry="6" fill="#63b273"/><ellipse class="paint" cx="41" cy="177" rx="18" ry="6" fill="#63b273"/>
+    <path d="M-45 20Q${leftX} ${leftY - 15} ${leftX} ${leftY}M45 20Q${rightX} ${rightY - 15} ${rightX} ${rightY}" fill="none" stroke="#9d968e" stroke-width="25"/>
+    <circle class="paint" cx="${leftX}" cy="${leftY}" r="16" fill="#9d968e"/><circle class="paint" cx="${rightX}" cy="${rightY}" r="16" fill="#9d968e"/>
+    <ellipse class="paint" cx="-48" cy="22" rx="18" ry="20" fill="#e1544d"/><ellipse class="paint" cx="48" cy="22" rx="18" ry="20" fill="#e1544d"/>
+    <ellipse class="paint" cx="0" cy="88" rx="54" ry="38" fill="#5d7ca0"/>
+    <ellipse class="paint" cx="0" cy="48" rx="58" ry="58" fill="#e1544d"/>
+    <path d="M-28-4Q0 14 28-4" fill="none" stroke="#f7f2ea" stroke-width="8"/>
+    <circle class="paint" cx="0" cy="48" r="21" fill="#f7f2ea"/><circle class="paint" cx="0" cy="48" r="15" fill="#e1544d"/><path d="M-6 46Q0 54 6 46" fill="none" stroke="#f7f2ea" stroke-width="3.5"/>
+    <ellipse class="paint" cx="-52" cy="-126" rx="28" ry="42" transform="rotate(-16 -52 -126)" fill="#9d968e"/><ellipse class="paint" cx="52" cy="-126" rx="28" ry="42" transform="rotate(16 52 -126)" fill="#9d968e"/>
+    <ellipse class="paint" cx="-52" cy="-124" rx="16" ry="26" transform="rotate(-16 -52 -124)" fill="#f29aa6"/><ellipse class="paint" cx="52" cy="-124" rx="16" ry="26" transform="rotate(16 52 -124)" fill="#f29aa6"/>
+    <ellipse class="paint" cx="-7" cy="-136" rx="10" ry="14" fill="#9d968e"/><ellipse class="paint" cx="7" cy="-134" rx="8" ry="12" fill="#9d968e"/>
+    <ellipse class="paint" cx="0" cy="-67" rx="82" ry="72" fill="#9d968e"/>
+    <path d="M-44-106Q-29-115-14-106M14-106Q29-115 44-106" fill="none" stroke="#746f69" stroke-width="5"/>
+    <ellipse class="paint" cx="-28" cy="-75" rx="23" ry="26" fill="#fff"/><ellipse class="paint" cx="28" cy="-75" rx="23" ry="26" fill="#fff"/>
+    <ellipse cx="-26" cy="-75" rx="15" ry="18" fill="#49bd4c" stroke="none"/><ellipse cx="26" cy="-75" rx="15" ry="18" fill="#49bd4c" stroke="none"/>
+    <ellipse cx="-26" cy="-75" rx="9" ry="11" fill="#1b2421" stroke="none"/><ellipse cx="26" cy="-75" rx="9" ry="11" fill="#1b2421" stroke="none"/>
+    <circle cx="-31" cy="-82" r="4.5" fill="#fff" stroke="none"/><circle cx="21" cy="-82" r="4.5" fill="#fff" stroke="none"/>
+    <circle cx="-22" cy="-69" r="2.2" fill="#fff" stroke="none"/><circle cx="30" cy="-69" r="2.2" fill="#fff" stroke="none"/>
+    <ellipse class="paint" cx="-19" cy="-40" rx="29" ry="20" fill="#f7f2ea"/><ellipse class="paint" cx="19" cy="-40" rx="29" ry="20" fill="#f7f2ea"/><ellipse class="paint" cx="0" cy="-28" rx="24" ry="14" fill="#f7f2ea"/>
+    <ellipse class="paint" cx="0" cy="-50" rx="13" ry="9" fill="#f08596"/>
+    <path d="M0-41v12m0 0q-12 10-23 2m23-2q12 10 23 2M-46-40-88-45M-46-31-87-24M46-40 88-45M46-31 87-24" fill="none"/>
   </g>`;
 }
 
 function tomScene(line) {
-  const room = `<rect class="paint" width="640" height="460" rx="24" fill="#e8e5f1"/><path class="paint" d="M0 340h640v120H0z" fill="#d9cfbd"/><ellipse class="paint" cx="320" cy="405" rx="200" ry="37" fill="#9ebfc0"/><path class="paint" d="M68 312h145v38H68z" fill="#b2c8d2"/><ellipse class="paint" cx="140" cy="312" rx="68" ry="22" fill="#f0d5a6"/><g><path class="paint" d="M520 182h70v35h-70z" fill="#f1eee8"/><path d="M555 217v105M530 185q25-55 50 0" fill="none" stroke="#91a8ad" stroke-width="9"/></g>`;
+  const room = `<rect class="paint" width="640" height="460" rx="24" fill="#f1ece3"/><path class="paint" d="M0 340h640v120H0z" fill="#e3d6c3"/><ellipse class="paint" cx="320" cy="405" rx="200" ry="37" fill="#a8cfc9"/><path class="paint" d="M68 312h150v38H68z" fill="#b9cfd9"/><ellipse class="paint" cx="132" cy="310" rx="64" ry="21" fill="#f7dfb4"/><g><path class="paint" d="M520 182h70v35h-70z" fill="#f7f5f0"/><path d="M555 217v105M530 185q25-55 50 0" fill="none" stroke="#8fb0b6" stroke-width="9"/></g>`;
   if (line === 0) return svg(`${room}${tomCharacter(line)}<path d="M205 155q-25 35-15 70M435 145q25 35 15 70M272 65q48-25 96 0" fill="none" stroke="#d6a657" stroke-dasharray="7 9"/>`);
   if (line === 1) return svg(`${room}${tomCharacter(line)}<path d="M424 96l20-20m-7 40 28-8m-46-29 4-28" fill="none" stroke="#d6a657" stroke-width="5"/>`);
   if (line === 2) return svg(`${room}${tomCharacter(line)}<g transform="translate(343 221) rotate(-18)"><rect class="paint" x="-8" y="-55" width="16" height="75" rx="7" fill="#6fa9ba"/><rect class="paint" x="-13" y="-63" width="26" height="15" rx="4" fill="#f4f0e9"/></g><g fill="#d8f1f2" stroke="#8bb8c7"><circle cx="210" cy="125" r="15"/><circle cx="440" cy="135" r="20"/><circle cx="462" cy="83" r="11"/></g>`);
