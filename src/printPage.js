@@ -10,12 +10,8 @@ import {
   t,
 } from './i18n.js';
 import { renderSymbol } from './symbols/renderSymbol.js';
-
-const baseUrl = import.meta.env.BASE_URL;
-
-function assetUrl(path) {
-  return `${baseUrl}${path.replace(/^\//, '')}`;
-}
+import { renderPrintScene } from './printScenes.js';
+import { initializePrintMode } from './printMode.js';
 
 export function renderPrintPage(app, requestedStory) {
   applyLanguage();
@@ -31,6 +27,11 @@ export function renderPrintPage(app, requestedStory) {
           <span>${t('print.title')}</span>
         </a>
         <div class="print-toolbar-actions">
+          <div class="print-mode-picker" role="group" aria-label="${t('print.mode')}">
+            <span>${t('print.mode')}</span>
+            <button class="print-mode-button" type="button" data-print-mode="color" aria-pressed="true">🎨 ${t('print.color')}</button>
+            <button class="print-mode-button" type="button" data-print-mode="coloring" aria-pressed="false">✏️ ${t('print.coloring')}</button>
+          </div>
           ${languagePicker()}
           <a class="soft-button" href="${storyUrl(story.id)}">← ${t('print.back')}</a>
           <button class="print-action" id="print-book" type="button">🖨 ${t('print.action')}</button>
@@ -40,17 +41,17 @@ export function renderPrintPage(app, requestedStory) {
 
       <main class="print-book">
         <section class="print-page print-cover" aria-labelledby="print-cover-title">
-          <div class="print-cover-kicker">${t('print.coverEyebrow')}</div>
-          <div class="print-cover-image">
-            <img src="${assetUrl(story.preview)}" alt="${story.title}" />
-          </div>
           <div class="print-cover-copy">
+            <div class="print-cover-kicker">${t('print.coverEyebrow')}</div>
             <span class="print-cover-emoji" aria-hidden="true">${story.emoji}</span>
             <h1 id="print-cover-title">${story.title}</h1>
             <p>${story.shortDescription}</p>
             <div class="print-cover-tags">${story.tags.map((tag) => `<span>${tag}</span>`).join('')}</div>
             <strong class="print-cover-author">${story.author}</strong>
             <small class="print-license">Пиктограммы / Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0</small>
+          </div>
+          <div class="print-scene print-cover-scene" role="img" aria-label="${story.title}">
+            ${renderPrintScene(story.id)}
           </div>
           <footer class="print-page-footer"><span>${t('brand.name')}</span><span>${t('print.page', { current: 1, total: pageTotal })}</span></footer>
         </section>
@@ -63,15 +64,22 @@ export function renderPrintPage(app, requestedStory) {
                 <div><span>${story.emoji} ${story.title}</span><h2>${sentence}</h2></div>
                 <strong>${String(lineIndex + 1).padStart(2, '0')}</strong>
               </header>
-              <div class="print-word-grid print-word-grid--${line.words.length}">
-                ${line.words.map((word) => `
-                  <article class="print-word-card">
-                    <div class="print-word-symbol">${renderSymbol(word.symbol)}</div>
-                    <h3>${word.word}</h3>
-                    <p>${word.caption}</p>
-                  </article>`).join('')}
+              <div class="print-story-layout">
+                <div class="print-word-grid print-word-grid--${line.words.length}">
+                  ${line.words.map((word) => `
+                    <article class="print-word-card">
+                      <div class="print-word-symbol">${renderSymbol(word.symbol)}</div>
+                      <h3>${word.word}</h3>
+                      <p>${word.caption}</p>
+                    </article>`).join('')}
+                </div>
+                <figure class="print-scene-figure">
+                  <div class="print-scene" role="img" aria-label="${sentence}">
+                    ${renderPrintScene(story.id, lineIndex)}
+                  </div>
+                  <figcaption class="print-story-hint"><span aria-hidden="true">♡</span> ${t('print.hint')}</figcaption>
+                </figure>
               </div>
-              <p class="print-story-hint"><span aria-hidden="true">♡</span> ${t('print.hint')}</p>
               <footer class="print-page-footer"><span>${t('brand.name')} · ${story.title}</span><span>${t('print.page', { current: lineIndex + 2, total: pageTotal })}</span></footer>
             </section>`;
         }).join('')}
@@ -79,8 +87,10 @@ export function renderPrintPage(app, requestedStory) {
     </div>`;
 
   bindLanguagePicker();
+  const printMode = initializePrintMode();
   document.querySelectorAll('.print-book img').forEach((image) => { image.loading = 'eager'; });
   document.querySelector('#print-book').addEventListener('click', async () => {
+    await printMode.whenReady();
     const pendingImages = [...document.querySelectorAll('.print-book img')]
       .filter((image) => !image.complete)
       .map((image) => new Promise((resolve) => {
@@ -88,6 +98,7 @@ export function renderPrintPage(app, requestedStory) {
         image.addEventListener('error', resolve, { once: true });
       }));
     await Promise.all(pendingImages);
+    await document.fonts.ready;
     window.print();
   });
 }
