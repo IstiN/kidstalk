@@ -15,6 +15,8 @@ import {
   t,
 } from './i18n.js';
 
+const MAX_PHRASE_PICTURES = 15;
+
 export async function renderStoryPage(app, requestedStory) {
   const language = applyLanguage();
   const speech = new SpeechController(language);
@@ -39,8 +41,8 @@ export async function renderStoryPage(app, requestedStory) {
         </a>
         <div class="header-actions">
           ${languagePicker()}
-          <a class="soft-button print-view-link" id="print-view-link" href="${printUrl(storyDefinition.id, language)}">${printIcon}<span>${t('print.view')}</span></a>
-          <button class="soft-button sound-button" id="mute-button" type="button" aria-pressed="false">
+          <a class="soft-button print-view-link" id="print-view-link" href="${printUrl(storyDefinition.id, language)}" aria-label="${t('print.view')}">${printIcon}<span>${t('print.view')}</span></a>
+          <button class="soft-button sound-button" id="mute-button" type="button" aria-label="${t('story.soundOn')}" aria-pressed="false">
             ${uiIcons.speaker}<span>${t('story.soundOn')}</span>
           </button>
           <details class="voice-settings" id="voice-settings">
@@ -61,7 +63,7 @@ export async function renderStoryPage(app, requestedStory) {
           <span class="story-switcher-label">${t('story.switcherLabel')}</span>
           <div class="story-choices">
             ${localizedStories.map((item) => `
-              <a class="story-choice ${item.id === storyDefinition.id ? 'is-active' : ''}" href="${storyUrl(item.id, language)}" ${item.id === storyDefinition.id ? 'aria-current="page"' : ''}>
+              <a class="story-choice ${item.id === storyDefinition.id ? 'is-active' : ''}" href="${storyUrl(item.id, language)}" aria-label="${item.title}" ${item.id === storyDefinition.id ? 'aria-current="page"' : ''}>
                 <span class="story-choice-icon" aria-hidden="true">${item.emoji}</span>
                 <span><strong>${item.title}</strong><small>${item.subtitle}</small></span>
               </a>`).join('')}
@@ -86,7 +88,7 @@ export async function renderStoryPage(app, requestedStory) {
           <div class="phrase-actions">
             <button class="icon-button" id="backspace-button" type="button" aria-label="${t('story.backspace')}" title="${t('story.backspace')}" disabled>${uiIcons.backspace}</button>
             <button class="icon-button" id="clear-button" type="button" aria-label="${t('story.clear')}" title="${t('story.clear')}" disabled>${uiIcons.trash}</button>
-            <button class="speak-phrase-button" id="speak-phrase-button" type="button" disabled>${uiIcons.speaker}<span>${t('story.speak')}</span></button>
+            <button class="speak-phrase-button" id="speak-phrase-button" type="button" aria-label="${t('story.speak')}" disabled>${uiIcons.speaker}<span>${t('story.speak')}</span></button>
           </div>
         </section>
         ${speech.supported ? '' : `<p class="speech-notice">${t('story.speechUnsupported')}</p>`}
@@ -121,7 +123,7 @@ export async function renderStoryPage(app, requestedStory) {
             <div class="scene-toolbar">
               <div class="scene-label"><span class="scene-badge">3D</span><span>${t('story.sceneTouch')}</span></div>
               ${storyDefinition.scene === 'bunny'
-                ? `<button class="rain-button" id="rain-toggle" type="button" aria-pressed="false">${uiIcons.rain}<span>${t('story.rainPaused')}</span></button>`
+                ? `<button class="rain-button" id="rain-toggle" type="button" aria-label="${t('story.rainPaused')}" aria-pressed="false">${uiIcons.rain}<span>${t('story.rainPaused')}</span></button>`
                 : `<span class="scene-weather" aria-hidden="true">☀️ ${t('story.indoors')}</span>`}
             </div>
             <div class="scene-wrap">
@@ -133,7 +135,7 @@ export async function renderStoryPage(app, requestedStory) {
               <span class="caption-dot" aria-hidden="true"></span>
               <p class="scene-caption" id="scene-caption">${storyDefinition.initialCaption}</p>
             </div>
-            <button class="primary-story-button" id="play-story" type="button">${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small></button>
+            <button class="primary-story-button" id="play-story" type="button" aria-label="${t('story.playStory')}">${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small></button>
           </aside>
         </div>
 
@@ -222,7 +224,7 @@ export async function renderStoryPage(app, requestedStory) {
         const sayButton = document.createElement('button');
         sayButton.className = 'chip-word';
         sayButton.type = 'button';
-        sayButton.textContent = word.word;
+        sayButton.innerHTML = `${renderSymbol(word.symbol)}<span class="chip-word-text">${word.word}</span>`;
         sayButton.setAttribute('aria-label', t('story.speakWord', { word: word.word }));
         sayButton.addEventListener('click', () => player.playWord(word));
 
@@ -245,11 +247,15 @@ export async function renderStoryPage(app, requestedStory) {
     backspaceButton.disabled = !phrase.length;
     clearButton.disabled = !phrase.length;
     speakPhraseButton.disabled = !phrase.length;
-    requestAnimationFrame(() => { phraseContent.scrollLeft = phraseContent.scrollWidth; });
+    requestAnimationFrame(() => {
+      const wrapsPictures = getComputedStyle(phraseContent).flexWrap === 'wrap';
+      phraseContent.scrollLeft = wrapsPictures ? 0 : phraseContent.scrollWidth;
+    });
   }
 
   function updatePlaybackButtons() {
     playStoryButton.classList.toggle('is-playing', playing && playingSource === 'story');
+    playStoryButton.setAttribute('aria-label', playing && playingSource === 'story' ? t('story.stopStory') : t('story.playStory'));
     playStoryButton.innerHTML = playing && playingSource === 'story'
       ? `${uiIcons.stop}<span>${t('story.stopStory')}</span><small>${t('story.stopShort')}</small>`
       : `${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small>`;
@@ -274,6 +280,7 @@ export async function renderStoryPage(app, requestedStory) {
         phraseSpeaking = false;
         clearActiveCard();
         speakPhraseButton.classList.remove('is-speaking');
+        speakPhraseButton.setAttribute('aria-label', t('story.speak'));
         speakPhraseButton.innerHTML = `${uiIcons.speaker}<span>${t('story.speak')}</span>`;
         updatePlaybackButtons();
         break;
@@ -301,12 +308,14 @@ export async function renderStoryPage(app, requestedStory) {
       case 'phraseStart':
         phraseSpeaking = true;
         speakPhraseButton.classList.add('is-speaking');
+        speakPhraseButton.setAttribute('aria-label', t('story.stop'));
         speakPhraseButton.innerHTML = `${uiIcons.stop}<span>${t('story.stop')}</span>`;
         announce(text);
         break;
       case 'phraseEnd':
         phraseSpeaking = false;
         speakPhraseButton.classList.remove('is-speaking');
+        speakPhraseButton.setAttribute('aria-label', t('story.speak'));
         speakPhraseButton.innerHTML = `${uiIcons.speaker}<span>${t('story.speak')}</span>`;
         break;
     }
@@ -320,16 +329,19 @@ export async function renderStoryPage(app, requestedStory) {
     if (!rainButton) return;
     rainOn = enabled;
     rainButton.setAttribute('aria-pressed', String(enabled));
+    rainButton.setAttribute('aria-label', enabled ? t('story.rainOn') : t('story.rainPaused'));
     rainButton.innerHTML = `${uiIcons.rain}<span>${enabled ? t('story.rainOn') : t('story.rainPaused')}</span>`;
   }
 
   function speakWord(word, { addToPhrase = true } = {}) {
-    if (addToPhrase) {
+    const canAddWord = addToPhrase && phrase.length < MAX_PHRASE_PICTURES;
+    if (canAddWord) {
       phrase.push(word);
       renderPhrase();
     }
     player.playWord(word);
-    if (addToPhrase) announce(t('story.wordAdded', { word: word.word }));
+    if (canAddWord) announce(t('story.wordAdded', { word: word.word }));
+    else if (addToPhrase) announce(t('story.phraseFull'));
   }
 
   function startSequence(words, source, initialState) {
@@ -392,6 +404,7 @@ export async function renderStoryPage(app, requestedStory) {
     stopPlayback();
     localStorage.setItem('kidstalk-muted', String(speech.muted));
     muteButton.setAttribute('aria-pressed', String(speech.muted));
+    muteButton.setAttribute('aria-label', speech.muted ? t('story.soundOff') : t('story.soundOn'));
     muteButton.innerHTML = speech.muted
       ? `${uiIcons.muted}<span>${t('story.soundOff')}</span>`
       : `${uiIcons.speaker}<span>${t('story.soundOn')}</span>`;

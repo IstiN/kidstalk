@@ -2270,9 +2270,10 @@ footer {
   }
 }
 
-/* Compact story workspace: all learning controls fit a phone landscape viewport. */
-@media (orientation: landscape) and (min-width: 600px) and (max-height: 600px) {
+/* Child-first tablet workspace: pictures, large targets, one viewport, minimal text. */
+@media (min-width: 0px) {
   body.story-page {
+    height: 100dvh;
     min-height: 0;
     overflow: hidden;
     overscroll-behavior: none;
@@ -2281,22 +2282,523 @@ footer {
   .story-shell {
     width: 100%;
     height: 100dvh;
-    padding: 0 12px;
+    padding: 0 14px;
     display: flex;
     flex-direction: column;
   }
 
   .story-shell .topbar {
-    min-height: 48px;
-    height: 48px;
+    min-height: 60px;
+    height: 60px;
     padding: 0;
-    flex: 0 0 48px;
+    flex: 0 0 60px;
     flex-wrap: nowrap;
     gap: 8px;
   }
 
   .story-shell .brand {
+    gap: 0;
+  }
+
+  .story-shell .brand-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .story-shell .brand-mark svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .story-shell .topbar > .header-actions {
+    width: auto;
+    flex-wrap: nowrap;
     gap: 7px;
+  }
+
+  .story-shell .soft-button {
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 13px;
+  }
+
+  .story-shell .soft-button.language-picker {
+    width: auto;
+    min-width: 154px;
+    min-height: 44px;
+    padding: 0 32px 0 12px;
+    font-size: 13px;
+  }
+
+  .story-shell .settings-popover {
+    position: fixed;
+    top: 56px;
+    right: 14px;
+    left: auto;
+    width: min(310px, calc(100vw - 28px));
+    max-height: calc(100dvh - 66px);
+    overflow-y: auto;
+  }
+
+  .story-shell main {
+    min-height: 0;
+    padding: 7px 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .story-shell .intro,
+  .story-shell .steps,
+  .story-shell footer,
+  .story-shell .board-tip,
+  .story-shell .panel-heading,
+  .story-shell .story-switcher-label,
+  .story-shell .story-choice > span:last-child,
+  .story-shell .brand > span:last-child,
+  .story-shell .soft-button > span,
+  .story-shell .phrase-heading > div,
+  .story-shell .word-label,
+  .story-shell .scene-label > span:last-child,
+  .story-shell .scene-weather,
+  .story-shell .rain-button > span,
+  .story-shell .touch-hint,
+  .story-shell .scene-caption-wrap,
+  .story-shell .primary-story-button > span,
+  .story-shell .primary-story-button > small,
+  .story-shell .speak-phrase-button > span,
+  .story-shell .chip-word-text,
+  .story-shell .chip-remove {
+    display: none;
+  }
+
+  .story-shell .story-switcher {
+    min-height: 44px;
+    height: 44px;
+    margin: 0 0 7px;
+    display: block;
+    flex: 0 0 44px;
+  }
+
+  .story-shell .story-choices {
+    display: flex;
+    gap: 8px;
+  }
+
+  .story-shell .story-choice {
+    min-width: 0;
+    min-height: 44px;
+    height: 44px;
+    padding: 3px;
+    flex: 1;
+    justify-content: center;
+    border-radius: 13px;
+  }
+
+  .story-shell .story-choice-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 25px;
+  }
+
+  .story-shell .phrase-panel {
+    min-height: 64px;
+    height: 64px;
+    margin: 0 0 7px;
+    padding: 7px;
+    flex: 0 0 64px;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 8px;
+    border-radius: 15px;
+  }
+
+  .story-shell .phrase-heading {
+    min-width: 0;
+  }
+
+  .story-shell .phrase-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .story-shell .phrase-content {
+    min-width: 0;
+    min-height: 0;
+    height: 50px;
+    padding: 0;
+    grid-column: auto;
+    grid-row: auto;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .story-shell .phrase-placeholder {
+    padding: 0;
+    font-size: 0;
+  }
+
+  .story-shell .phrase-placeholder::after {
+    content: '👆';
+    font-size: 25px;
+  }
+
+  .story-shell .phrase-chip {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    animation: none;
+  }
+
+  .story-shell .chip-word {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: block;
+  }
+
+  .story-shell .chip-word > svg,
+  .story-shell .chip-word > .aac-symbol {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .story-shell .phrase-actions {
+    gap: 5px;
+  }
+
+  .story-shell .icon-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .story-shell .speak-phrase-button {
+    min-width: 44px;
+    width: 44px;
+    height: 42px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .story-shell .content-grid {
+    min-height: 0;
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .story-shell .cards-panel {
+    min-height: 0;
+    padding: 8px;
+    display: flex;
+    border-radius: 17px;
+  }
+
+  .story-shell .story-lines {
+    min-height: 0;
+    display: grid;
+    flex: 1;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .story-shell .story-line {
+    min-height: 0;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .story-shell .line-index {
+    display: none;
+  }
+
+  .story-shell .line-control {
+    height: 100%;
+  }
+
+  .story-shell .line-play {
+    width: 40px;
+    height: 100%;
+    min-height: 34px;
+    border-radius: 12px;
+  }
+
+  .story-shell .line-play svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .story-shell .line-words {
+    min-height: 0;
+    height: 100%;
+    grid-template-columns: repeat(var(--word-count), minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .story-shell .story-line:first-child .word-card:last-child {
+    width: auto;
+    grid-column: auto;
+    justify-self: stretch;
+  }
+
+  .story-shell .word-card {
+    min-height: 0;
+    height: 100%;
+    padding: 4px;
+    border-radius: 15px;
+    container-type: inline-size;
+  }
+
+  .story-shell .word-icon {
+    width: min(80cqw, 10vh, 96px);
+    height: min(80cqw, 10vh, 96px);
+  }
+
+  .story-shell .card-sound {
+    top: 5px;
+    right: 5px;
+  }
+
+  .story-shell .visual-panel {
+    position: static;
+    min-height: 0;
+    padding: 8px;
+    display: grid;
+    grid-template-rows: 40px minmax(0, 1fr) 56px;
+    border-radius: 17px;
+  }
+
+  .story-shell .scene-toolbar {
+    min-height: 40px;
+    height: 40px;
+    padding: 0 2px 7px;
+  }
+
+  .story-shell .rain-button {
+    width: 34px;
+    min-height: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .story-shell .scene-wrap {
+    height: auto;
+    min-height: 0;
+    border-radius: 14px;
+  }
+
+  .story-shell .primary-story-button {
+    min-height: 56px;
+    height: 56px;
+    margin-top: 7px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 15px;
+  }
+
+  .story-shell .primary-story-button > svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .story-shell .speech-notice {
+    position: fixed;
+    z-index: 60;
+    right: 14px;
+    bottom: 8px;
+    max-width: 280px;
+    margin: 0;
+    padding: 8px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 599px) and (orientation: portrait) {
+  .story-shell {
+    padding: 0 8px;
+  }
+
+  .story-shell .topbar {
+    min-height: 54px;
+    height: 54px;
+    flex-basis: 54px;
+  }
+
+  .story-shell .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .story-shell .brand-mark svg {
+    width: 31px;
+    height: 31px;
+  }
+
+  .story-shell .topbar > .header-actions {
+    gap: 4px;
+  }
+
+  .story-shell .soft-button {
+    width: 38px;
+    min-height: 38px;
+    border-radius: 11px;
+  }
+
+  .story-shell .soft-button.language-picker {
+    min-width: 154px;
+    min-height: 46px;
+    padding: 0 29px 0 10px;
+    font-size: 12px;
+    background-position: right 9px center;
+  }
+
+  .story-shell main {
+    padding: 5px 0;
+  }
+
+  .story-shell .story-switcher {
+    min-height: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    flex-basis: 40px;
+  }
+
+  .story-shell .story-choice {
+    min-height: 40px;
+    height: 40px;
+  }
+
+  .story-shell .story-choice-icon {
+    width: 31px;
+    height: 31px;
+    font-size: 22px;
+  }
+
+  .story-shell .phrase-panel {
+    min-height: 84px;
+    height: 84px;
+    margin-bottom: 5px;
+    padding: 6px;
+    flex-basis: 84px;
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 5px;
+  }
+
+  .story-shell .phrase-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+
+  .story-shell .phrase-content {
+    height: 70px;
+    gap: 3px;
+  }
+
+  .story-shell .phrase-chip,
+  .story-shell .chip-word {
+    width: clamp(18px, 5.8vw, 24px);
+    height: clamp(18px, 5.8vw, 24px);
+  }
+
+  .story-shell .phrase-actions {
+    gap: 3px;
+  }
+
+  .story-shell .icon-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .story-shell .speak-phrase-button {
+    min-width: 38px;
+    width: 38px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .story-shell .content-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(140px, 0.68fr) minmax(0, 1.32fr);
+    gap: 6px;
+  }
+
+  .story-shell .visual-panel {
+    order: -1;
+    padding: 5px;
+    grid-template-rows: 26px minmax(0, 1fr) 42px;
+  }
+
+  .story-shell .scene-toolbar {
+    min-height: 26px;
+    height: 26px;
+    padding-bottom: 3px;
+  }
+
+  .story-shell .rain-button {
+    width: 28px;
+    min-height: 24px;
+  }
+
+  .story-shell .primary-story-button {
+    min-height: 42px;
+    height: 42px;
+    margin-top: 4px;
+    border-radius: 11px;
+  }
+
+  .story-shell .cards-panel {
+    padding: 5px;
+  }
+
+  .story-shell .story-lines {
+    gap: 5px;
+  }
+
+  .story-shell .story-line {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .story-shell .line-play {
+    width: 34px;
+    border-radius: 10px;
+  }
+
+  .story-shell .line-words {
+    gap: 5px;
+  }
+
+  .story-shell .word-card {
+    padding: 2px;
+    border-radius: 11px;
+  }
+
+  .story-shell .word-icon {
+    width: min(80cqw, 6vh, 54px);
+    height: min(80cqw, 6vh, 54px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .story-shell .topbar {
+    min-height: 44px;
+    height: 44px;
+    flex-basis: 44px;
   }
 
   .story-shell .brand-mark {
@@ -2310,383 +2812,20 @@ footer {
     height: 28px;
   }
 
-  .story-shell .brand strong {
-    font-size: 13px;
-  }
-
-  .story-shell .brand small,
-  .story-shell .soft-button > span {
-    display: none;
-  }
-
   .story-shell .topbar > .header-actions {
-    width: auto;
-    flex-wrap: nowrap;
     gap: 5px;
   }
 
   .story-shell .soft-button {
     width: 34px;
     min-height: 34px;
-    padding: 0;
     border-radius: 10px;
   }
 
   .story-shell .soft-button.language-picker {
-    width: auto;
     min-width: 140px;
     min-height: 36px;
-    padding: 0 29px 0 10px;
     font-size: 12px;
-  }
-
-  .story-shell .settings-popover {
-    position: fixed;
-    top: 44px;
-    right: 8px;
-    left: auto;
-    width: min(300px, calc(100vw - 16px));
-    max-height: calc(100dvh - 52px);
-    padding: 14px;
-    overflow-y: auto;
-  }
-
-  .story-shell main {
-    min-height: 0;
-    padding: 6px 0;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-  }
-
-  .story-shell .intro,
-  .story-shell .steps,
-  .story-shell footer,
-  .story-shell .board-tip {
-    display: none;
-  }
-
-  .story-shell .story-switcher {
-    min-height: 32px;
-    margin: 0 0 6px;
-    display: block;
-    flex: 0 0 32px;
-  }
-
-  .story-shell .story-switcher-label,
-  .story-shell .story-choice small {
-    display: none;
-  }
-
-  .story-shell .story-choices {
-    display: flex;
-    gap: 6px;
-  }
-
-  .story-shell .story-choice {
-    min-width: 0;
-    min-height: 32px;
-    height: 32px;
-    padding: 2px 9px;
-    flex: 1;
-    gap: 7px;
-    border-radius: 10px;
-  }
-
-  .story-shell .story-choice-icon {
-    width: 25px;
-    height: 25px;
-    border-radius: 8px;
-    font-size: 17px;
-  }
-
-  .story-shell .story-choice strong {
-    font-size: 10px;
-  }
-
-  .story-shell .phrase-panel {
-    min-height: 44px;
-    height: 44px;
-    margin: 0 0 6px;
-    padding: 4px 7px;
-    flex: 0 0 44px;
-    grid-template-columns: auto minmax(80px, 1fr) auto;
-    gap: 8px;
-    border-radius: 12px;
-  }
-
-  .story-shell .phrase-heading {
-    min-width: 0;
-    gap: 6px;
-  }
-
-  .story-shell .phrase-heading p {
-    display: none;
-  }
-
-  .story-shell .phrase-heading h2 {
-    font-size: 12px;
-  }
-
-  .story-shell .phrase-icon {
-    width: 29px;
-    height: 29px;
-    border-radius: 8px;
-  }
-
-  .story-shell .phrase-icon svg {
-    width: 17px;
-    height: 17px;
-  }
-
-  .story-shell .phrase-content {
-    min-height: 32px;
-    padding: 0;
-    grid-column: auto;
-    grid-row: auto;
-  }
-
-  .story-shell .phrase-placeholder {
-    font-size: 10px;
-  }
-
-  .story-shell .phrase-chip {
-    height: 28px;
-    border-radius: 8px;
-  }
-
-  .story-shell .chip-word {
-    padding: 0 4px 0 8px;
-    font-size: 10px;
-  }
-
-  .story-shell .chip-remove {
-    width: 22px;
-  }
-
-  .story-shell .phrase-actions {
-    gap: 4px;
-  }
-
-  .story-shell .icon-button {
-    width: 31px;
-    height: 31px;
-    border-radius: 8px;
-  }
-
-  .story-shell .speak-phrase-button {
-    min-width: 96px;
-    height: 33px;
-    padding: 0 9px;
-    border-radius: 9px;
-    font-size: 10px;
-  }
-
-  .story-shell .content-grid {
-    min-height: 0;
-    display: grid;
-    flex: 1;
-    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .story-shell .cards-panel {
-    min-height: 0;
-    padding: 6px 8px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 14px;
-  }
-
-  .story-shell .panel-heading {
-    min-height: 22px;
-    margin: 0 2px 5px;
-    flex: 0 0 22px;
-  }
-
-  .story-shell .panel-heading h2 {
-    font-size: 13px;
-  }
-
-  .story-shell .panel-heading p {
-    display: none;
-  }
-
-  .story-shell .word-count {
-    padding: 3px 6px;
-    font-size: 8px;
-  }
-
-  .story-shell .story-lines {
-    min-height: 0;
-    display: grid;
-    flex: 1;
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    gap: 4px;
-  }
-
-  .story-shell .story-line {
-    min-height: 0;
-    grid-template-columns: 26px minmax(0, 1fr);
-    gap: 4px;
-  }
-
-  .story-shell .line-index {
-    display: none;
-  }
-
-  .story-shell .line-play {
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
-  }
-
-  .story-shell .line-play svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .story-shell .line-words {
-    min-height: 0;
-    height: 100%;
-    grid-template-columns: repeat(var(--word-count), minmax(0, 1fr));
-    gap: 4px;
-  }
-
-  .story-shell .story-line:first-child .word-card:last-child {
-    width: auto;
-    grid-column: auto;
-    justify-self: stretch;
-  }
-
-  .story-shell .word-card {
-    min-height: 0;
-    height: 100%;
-    padding: 2px;
-    flex-direction: column;
-    gap: 1px;
-    border-radius: 9px;
-  }
-
-  .story-shell .word-icon {
-    width: clamp(20px, 6.5vh, 34px);
-    height: clamp(20px, 6.5vh, 34px);
-  }
-
-  .story-shell .word-label {
-    max-width: 100%;
-    overflow: hidden;
-    font-size: clamp(8px, 1.5vw, 11px);
-    text-overflow: ellipsis;
-  }
-
-  .story-shell .card-sound {
-    top: 3px;
-    right: 3px;
-  }
-
-  .story-shell .card-sound svg {
-    width: 10px;
-    height: 10px;
-  }
-
-  .story-shell .visual-panel {
-    position: static;
-    min-height: 0;
-    padding: 6px;
-    display: grid;
-    grid-template-rows: 28px minmax(0, 1fr) 30px 32px;
-    border-radius: 14px;
-  }
-
-  .story-shell .scene-toolbar {
-    min-height: 28px;
-    height: 28px;
-    padding: 0 2px 4px;
-  }
-
-  .story-shell .scene-label > span:last-child {
-    display: none;
-  }
-
-  .story-shell .scene-badge {
-    padding: 2px 4px;
-    font-size: 7px;
-  }
-
-  .story-shell .rain-button {
-    min-height: 24px;
-    padding: 0 6px;
-    font-size: 8px;
-  }
-
-  .story-shell .scene-weather {
-    padding: 3px 5px;
-    font-size: 7px;
-  }
-
-  .story-shell .scene-wrap {
-    height: auto;
-    min-height: 0;
-    border-radius: 10px;
-  }
-
-  .story-shell .touch-hint {
-    display: none;
-  }
-
-  .story-shell .scene-caption-wrap {
-    min-height: 30px;
-    height: 30px;
-    padding: 3px 2px;
-    align-items: center;
-  }
-
-  .story-shell .caption-dot {
-    width: 4px;
-    height: 4px;
-    margin: 0;
-  }
-
-  .story-shell .scene-caption {
-    display: -webkit-box;
-    overflow: hidden;
-    font-size: 8.5px;
-    line-height: 1.15;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  .story-shell .primary-story-button {
-    min-height: 32px;
-    height: 32px;
-    padding: 0 8px;
-    border-radius: 9px;
-    font-size: 10px;
-  }
-
-  .story-shell .primary-story-button > small {
-    display: none;
-  }
-
-  .story-shell .speech-notice {
-    position: fixed;
-    z-index: 60;
-    right: 12px;
-    bottom: 8px;
-    max-width: 280px;
-    margin: 0;
-    padding: 8px;
-    font-size: 9px;
-  }
-}
-
-@media (orientation: landscape) and (min-width: 600px) and (max-height: 360px) {
-  .story-shell .topbar {
-    min-height: 44px;
-    height: 44px;
-    flex-basis: 44px;
   }
 
   .story-shell main {
@@ -2694,49 +2833,321 @@ footer {
   }
 
   .story-shell .story-switcher {
-    min-height: 28px;
-    height: 28px;
-    flex-basis: 28px;
+    min-height: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+    flex-basis: 32px;
   }
 
   .story-shell .story-choice {
-    min-height: 28px;
-    height: 28px;
+    min-height: 32px;
+    height: 32px;
+    border-radius: 10px;
   }
 
   .story-shell .story-choice-icon {
-    width: 22px;
-    height: 22px;
-    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
   }
 
   .story-shell .phrase-panel {
-    min-height: 40px;
-    height: 40px;
-    flex-basis: 40px;
-  }
-
-  .story-shell .cards-panel {
-    padding: 4px 6px;
-  }
-
-  .story-shell .panel-heading {
-    min-height: 18px;
+    min-height: 46px;
+    height: 46px;
     margin-bottom: 4px;
-    flex-basis: 18px;
+    padding: 5px;
+    flex-basis: 46px;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 5px;
+    border-radius: 12px;
   }
 
-  .story-shell .story-lines {
+  .story-shell .phrase-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .story-shell .phrase-content {
+    height: 34px;
+    gap: 2px;
+  }
+
+  .story-shell .phrase-placeholder::after {
+    font-size: 19px;
+  }
+
+  .story-shell .phrase-chip,
+  .story-shell .chip-word {
+    width: 20px;
+    height: 20px;
+  }
+
+  .story-shell .phrase-actions {
     gap: 3px;
   }
 
-  .story-shell .word-icon {
-    width: 18px;
-    height: 18px;
+  .story-shell .icon-button {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
   }
 
-  .story-shell .word-label {
-    font-size: 8px;
-    line-height: 1;
+  .story-shell .speak-phrase-button {
+    min-width: 32px;
+    width: 32px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .story-shell .content-grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+    gap: 6px;
+  }
+
+  .story-shell .cards-panel {
+    padding: 5px;
+    border-radius: 13px;
+  }
+
+  .story-shell .story-lines {
+    gap: 4px;
+  }
+
+  .story-shell .story-line {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .story-shell .line-play {
+    width: 34px;
+    border-radius: 9px;
+  }
+
+  .story-shell .line-words {
+    gap: 4px;
+  }
+
+  .story-shell .word-card {
+    padding: 2px;
+    border-radius: 10px;
+  }
+
+  .story-shell .word-icon {
+    width: min(80cqw, 8vh, 36px);
+    height: min(80cqw, 8vh, 36px);
+  }
+
+  .story-shell .visual-panel {
+    padding: 5px;
+    grid-template-rows: 26px minmax(0, 1fr) 36px;
+    border-radius: 13px;
+  }
+
+  .story-shell .scene-toolbar {
+    min-height: 26px;
+    height: 26px;
+    padding-bottom: 3px;
+  }
+
+  .story-shell .rain-button {
+    width: 28px;
+    min-height: 24px;
+  }
+
+  .story-shell .primary-story-button {
+    min-height: 36px;
+    height: 36px;
+    margin-top: 4px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .story-shell .soft-button.language-picker {
+    min-width: 112px;
+    min-height: 40px;
+    padding-right: 24px;
+    font-size: 10px;
+  }
+}
+
+/* Picture-only catalog for pre-readers: two large story choices, no page scroll. */
+body.catalog-page {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.catalog-shell {
+  width: 100%;
+  height: 100dvh;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-topbar {
+  min-height: 60px;
+  height: 60px;
+  padding: 0;
+  flex: 0 0 60px;
+  flex-wrap: nowrap;
+}
+
+.catalog-topbar .brand > span:last-child,
+.catalog-topbar .catalog-header-link,
+.catalog-main > .catalog-hero,
+.catalog-main > .catalog-features,
+.catalog-section-heading,
+.catalog-interaction-note,
+.catalog-footer,
+.story-preview-body,
+.story-count-badge {
+  display: none;
+}
+
+.catalog-topbar > .header-actions {
+  width: auto;
+  flex-wrap: nowrap;
+}
+
+.catalog-main,
+.catalog-stories {
+  min-height: 0;
+  flex: 1;
+}
+
+.catalog-main {
+  padding: 7px 0;
+  display: flex;
+}
+
+.catalog-stories,
+.story-catalog-grid,
+.story-preview-card {
+  height: 100%;
+  min-height: 0;
+}
+
+.story-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.story-preview-card {
+  border-radius: 22px;
+}
+
+.story-preview-card > a {
+  min-height: 0;
+}
+
+.story-preview-visual {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.story-preview-visual img {
+  object-fit: contain;
+}
+
+.story-open-button {
+  width: 64px;
+  height: 64px;
+  right: 50%;
+  bottom: 20px;
+  border-width: 5px;
+  transform: translateX(50%);
+}
+
+.story-preview-card:hover .story-open-button {
+  transform: translateX(50%) scale(1.08);
+}
+
+@media (max-width: 599px) and (orientation: portrait) {
+  .catalog-shell {
+    padding: 0 8px;
+  }
+
+  .catalog-topbar {
+    min-height: 54px;
+    height: 54px;
+    flex-basis: 54px;
+  }
+
+  .catalog-topbar .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .catalog-topbar .soft-button.language-picker {
+    min-width: 154px;
+    min-height: 46px;
+    font-size: 12px;
+  }
+
+  .catalog-main {
+    padding: 5px 0;
+  }
+
+  .story-catalog-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .story-preview-card {
+    border-radius: 16px;
+  }
+
+  .story-open-button {
+    width: 50px;
+    height: 50px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .catalog-topbar .soft-button.language-picker {
+    min-width: 118px;
+    min-height: 42px;
+    font-size: 11px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .catalog-topbar {
+    min-height: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .catalog-topbar .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .catalog-topbar .soft-button.language-picker {
+    min-width: 140px;
+    min-height: 36px;
+    font-size: 12px;
+  }
+
+  .catalog-main {
+    padding: 4px 0;
+  }
+
+  .story-catalog-grid {
+    gap: 7px;
+  }
+
+  .story-open-button {
+    width: 46px;
+    height: 46px;
+    bottom: 10px;
   }
 }

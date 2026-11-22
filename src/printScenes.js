@@ -36,7 +36,14 @@ function catScene(line) {
 }
 
 function bench() {
-  return `<g><path class="paint" d="M150 261h350v28H150zM158 303h334v25H158z" fill="#dca65f"/><path class="paint" d="M168 188h18v175h-18zM464 188h18v175h-18z" fill="#b97e45"/><path class="paint" d="M151 191h348v27H151zM151 226h348v25H151z" fill="#e0ad68"/><path class="paint" d="M183 326h18v83h-18zM449 326h18v83h-18z" fill="#b97e45"/><path d="M172 409h38M440 409h38" fill="none"/></g>`;
+  return `<g>
+    <path class="paint" d="M171 181Q163 238 181 320L196 320Q181 241 188 181ZM462 181Q477 241 459 320H444Q463 238 449 181Z" fill="#b97e45"/>
+    <path class="paint" d="M151 174Q322 157 493 174L493 199Q322 184 151 199ZM155 212Q322 198 489 212L489 237Q322 224 155 237Z" fill="#e0ad68"/>
+    <path class="paint" d="M143 249Q157 239 181 246L225 259 222 272 174 263Q154 259 147 267ZM501 249Q487 239 463 246L423 259 426 272 470 263Q490 259 497 267Z" fill="#d39a5c"/>
+    <path class="paint" d="M183 303C184 340 178 376 165 405H184C197 367 203 336 204 306ZM445 303C442 340 448 376 461 405H480C467 367 461 336 462 306Z" fill="#b97e45"/>
+    <path class="paint" d="M145 280Q320 266 500 280L490 309Q320 296 155 309Z" fill="#dca65f"/>
+    <path d="M174 185Q322 172 470 185M178 222Q322 210 466 222M174 288Q322 278 472 288M157 405h38M451 405h38" fill="none" stroke="#bd874f"/>
+  </g>`;
 }
 
 function bunny(x, y, { wet = false, reaching = false } = {}) {

@@ -31,6 +31,7 @@ export function renderCatalog(app) {
   const language = applyLanguage();
   const localizedStories = stories.map((story) => localizeStory(story, language));
   document.title = t('catalog.documentTitle');
+  document.body.classList.add('catalog-page');
   app.innerHTML = `
     <div class="page-shell catalog-shell">
       <header class="topbar catalog-topbar">
