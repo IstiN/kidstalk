@@ -23,12 +23,13 @@ export async function renderStoryPage(app, requestedStory) {
   const story = storyDefinition.lines;
   const allWords = story.flatMap((line) => line.words);
   const interactiveWords = [...allWords, ...(storyDefinition.extraWords || [])];
-  const printIcon = uiIcons.print || '<span aria-hidden="true">⎙</span>';
+  const printIcon = uiIcons.print;
   const formatRate = (rate) => `${rate.toFixed(2).replace('.', language === 'en' ? '.' : ',').replace(/0$/, '')}×`;
   document.title = `${storyDefinition.title} — ${t('brand.name')}`;
+  document.body.classList.add('story-page');
 
   app.innerHTML = `
-    <div class="page-shell">
+    <div class="page-shell story-shell">
       <header class="topbar">
         <a class="brand" href="${homeUrl(language)}" aria-label="${t('brand.homeAria')}">
           <span class="brand-mark" aria-hidden="true">

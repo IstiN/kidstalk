@@ -7,7 +7,7 @@ export const catStory = {
   subtitle: 'Мячик и помощь мамы',
   description: 'Нажимай на слова и предметы в комнате. Здесь все можно потрогать.',
   shortDescription: 'Мячик закатился под стул. Котик попробует достать его лапкой, а мама придёт на помощь.',
-  preview: '/previews/cat.webp',
+  preview: '/previews/cat.svg',
   tags: ['Игра', 'Дом', 'Помощь'],
   scene: 'cat',
   initialState: { cat: 'near-ball', ball: 'floor', mom: 'away' },

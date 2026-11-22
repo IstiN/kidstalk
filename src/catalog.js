@@ -13,6 +13,7 @@ import {
 const baseUrl = import.meta.env.BASE_URL;
 
 function assetUrl(path) {
+  if (/^https?:\/\//.test(path)) return path;
   return `${baseUrl}${path.replace(/^\//, '')}`;
 }
 
@@ -78,7 +79,7 @@ export function renderCatalog(app) {
                 <article class="story-preview-card story-preview-card--${story.id}">
                   <a href="${storyUrl(story.id, language)}" aria-label="${t('catalog.openStoryAria', { title: story.title })}">
                     <div class="story-preview-visual">
-                      <img src="${assetUrl(story.preview)}" alt="${t('catalog.previewAlt', { title: story.title })}" width="992" height="842" />
+                      <img src="${assetUrl(story.preview)}" alt="${t('catalog.previewAlt', { title: story.title })}" width="640" height="460" />
                       <span class="story-count-badge">${t('common.words', { count: wordCount })}</span>
                       <span class="story-open-button" aria-hidden="true">${uiIcons.play}</span>
                     </div>

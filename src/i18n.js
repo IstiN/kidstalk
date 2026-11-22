@@ -43,6 +43,7 @@ const translations = {
     'footer.message': 'Каждое слово важно',
     'footer.symbols': 'Пиктограммы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
     'language.label': 'Язык',
+    'language.auto': 'Авто: {language}',
     'print.view': 'Версия для печати',
     'print.title': 'Скажи со мной — книга для чтения',
     'print.action': 'Печать',
@@ -150,6 +151,7 @@ const translations = {
     'footer.message': 'Every word matters',
     'footer.symbols': 'Symbols: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
     'language.label': 'Language',
+    'language.auto': 'Auto: {language}',
     'print.view': 'Print view',
     'print.title': 'Say It With Me — a book to read',
     'print.action': 'Print',
@@ -257,6 +259,7 @@ const translations = {
     'footer.message': 'Кожнае слова важна',
     'footer.symbols': 'Піктаграмы: Sergio Palao / ARASAAC · CC BY-NC-SA 4.0',
     'language.label': 'Мова',
+    'language.auto': 'Аўто: {language}',
     'print.view': 'Версія для друку',
     'print.title': 'Скажы са мной — кніга для чытання',
     'print.action': 'Друкаваць',
@@ -743,8 +746,12 @@ function languageFromBrowser() {
   return null;
 }
 
+function explicitLanguage() {
+  return languageFromQuery() || languageFromStorage();
+}
+
 export function getLanguage() {
-  return languageFromQuery() || languageFromStorage() || languageFromBrowser() || 'ru';
+  return explicitLanguage() || languageFromBrowser() || 'ru';
 }
 
 export function applyLanguage(language = getLanguage()) {
@@ -788,8 +795,11 @@ export function localizeStory(story, language = getLanguage()) {
 
 export function languagePicker() {
   const current = getLanguage();
+  const explicit = explicitLanguage();
+  const currentLabel = LANGUAGES.find(({ id }) => id === current)?.label || current;
   return `<select class="soft-button language-picker" id="language-picker" data-language-picker aria-label="${translate(current, 'language.label')}">
-    ${LANGUAGES.map(({ id, label }) => `<option value="${id}" ${id === current ? 'selected' : ''}>${label}</option>`).join('')}
+    <option value="auto" ${explicit ? '' : 'selected'}>${translate(current, 'language.auto', { language: currentLabel })}</option>
+    ${LANGUAGES.map(({ id, label }) => `<option value="${id}" ${id === current && explicit ? 'selected' : ''}>${label}</option>`).join('')}
   </select>`;
 }
 
@@ -798,30 +808,39 @@ export function bindLanguagePicker() {
     if (select.dataset.languageBound === 'true') return;
     select.dataset.languageBound = 'true';
     select.addEventListener('change', () => {
-      if (!LANGUAGE_IDS.has(select.value)) return;
+      if (select.value !== 'auto' && !LANGUAGE_IDS.has(select.value)) return;
+      const url = new URL(window.location.href);
       try {
-        window.localStorage.setItem(LANGUAGE_KEY, select.value);
+        if (select.value === 'auto') window.localStorage.removeItem(LANGUAGE_KEY);
+        else window.localStorage.setItem(LANGUAGE_KEY, select.value);
       } catch {
         // The URL still preserves the choice when storage is unavailable.
       }
-      const url = new URL(window.location.href);
-      url.searchParams.set('lang', select.value);
+      if (select.value === 'auto') url.searchParams.delete('lang');
+      else url.searchParams.set('lang', select.value);
       window.location.assign(`${url.pathname}${url.search}${url.hash}`);
     });
   });
 }
 
+function withLanguage(params, language) {
+  const selected = normalizeLanguage(language);
+  if (explicitLanguage() || typeof window === 'undefined' || selected !== getLanguage()) {
+    params.set('lang', selected);
+  }
+  return params;
+}
+
 export function storyUrl(id, language = getLanguage()) {
-  const params = new URLSearchParams({ story: id, lang: normalizeLanguage(language) });
-  return `?${params.toString()}`;
+  return `?${withLanguage(new URLSearchParams({ story: id }), language).toString()}`;
 }
 
 export function homeUrl(language = getLanguage()) {
-  const params = new URLSearchParams({ lang: normalizeLanguage(language) });
-  return `./?${params.toString()}`;
+  const params = withLanguage(new URLSearchParams(), language).toString();
+  return params ? `./?${params}` : './';
 }
 
 export function printUrl(id, language = getLanguage()) {
-  const params = new URLSearchParams({ story: id, print: '1', lang: normalizeLanguage(language) });
+  const params = withLanguage(new URLSearchParams({ story: id, print: '1' }), language);
   return `?${params.toString()}`;
 }

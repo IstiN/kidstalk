@@ -1,0 +1,15 @@
+<svg class="print-scene-art" width="640" height="460" viewBox="0 0 640 460" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><g stroke="#43534f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect class="paint" width="640" height="460" rx="24" fill="#f6ecdc"/><path class="paint" d="M0 330h640v130H0z" fill="#ddd2b9"/><path d="M0 330h640" fill="none" stroke="#b7a88f"/><ellipse class="paint" cx="285" cy="386" rx="205" ry="42" fill="#dcb8a8"/>
+    <g><rect class="paint" x="414" y="44" width="152" height="112" rx="5" fill="#b9d9df"/><circle class="paint" cx="530" cy="72" r="18" fill="#f1ca70"/><path class="paint" d="M416 135q46-60 79 0 35-45 69 0v19H416Z" fill="#a6bf98"/><path d="M490 44v112M414 100h152" fill="none" stroke="#fffaf0" stroke-width="8"/></g><g transform="translate(455 295)"><path class="paint" d="M-54-125h108v28H-54zM-58-20H58V8H-58z" fill="#d6a067"/><path class="paint" d="M-48-97h15V8h-15zM33-97h15V8H33zM-47 8h14v92h-14zM33 8h14v92H33z" fill="#bb8551"/><path d="M-57 100h27M30 100h27" fill="none"/></g><g transform="translate(170 278) scale(0.9)">
+    <path class="paint" d="M-43 37C-100 17-105 73-74 79-52 83-47 64-62 58-74 53-75 65-67 66" fill="#e5a06f"/>
+    
+    <ellipse class="paint" cx="0" cy="25" rx="53" ry="61" fill="#e5a06f"/>
+    <ellipse class="paint" cx="-31" cy="75" rx="30" ry="16" fill="#e5a06f"/><ellipse class="paint" cx="31" cy="75" rx="30" ry="16" fill="#e5a06f"/>
+    <path class="paint" d="M-42-70-34-119-7-83M42-70 34-119 7-83" fill="#e5a06f"/>
+    <path class="paint" d="M-34-83-31-103-18-85M34-83 31-103 18-85" fill="#edb2a4"/>
+    <circle class="paint" cx="0" cy="-48" r="48" fill="#e5a06f"/>
+    <ellipse class="paint" cx="0" cy="-31" rx="26" ry="18" fill="#f7dfc5"/>
+    <ellipse cx="-18" cy="-53" rx="5" ry="7" fill="#354943" stroke="none"/><ellipse cx="18" cy="-53" rx="5" ry="7" fill="#354943" stroke="none"/>
+    <path d="M-5-35 0-30 5-35Z" fill="#b76f70"/><path d="M0-30v7m0 0q-8 7-13 0m13 0q8 7 13 0M-27-30h-28m28 9-27 7M27-30h28m-28 9 27 7" fill="none"/>
+    <path d="M-12-83-8-70M0-86v16M12-83 8-70" fill="none" stroke="#a87457"/>
+    
+  </g><g transform="translate(322 362)"><circle class="paint" r="25" fill="#df776d"/><path d="M-20-12C-4-7 10 6 18 18M-20 12C-5 5 8-8 15-19" fill="none" stroke="#fff1df"/></g><path d="M225 213q35-32 70 0" fill="none" stroke="#d49b62" stroke-dasharray="5 9"/></g></svg>

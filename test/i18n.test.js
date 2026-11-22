@@ -40,6 +40,10 @@ function installBrowser(context, { search = '', stored = null, languages = [], s
         if (storageThrows) throw new Error('Storage unavailable');
         storage.set(key, value);
       },
+      removeItem: (key) => {
+        if (storageThrows) throw new Error('Storage unavailable');
+        storage.delete(key);
+      },
     },
   };
   globalThis.document = {
@@ -146,6 +150,26 @@ test('language picker works without storage and ignores invalid values', (contex
 
   assert.equal(assigned.length, 1);
   assert.match(assigned[0], /lang=en/);
+});
+
+test('automatic language mode follows the browser and survives navigation without locking the locale', (context) => {
+  installBrowser(context, { languages: ['be-BY'] });
+  assert.equal(getLanguage(), 'be');
+  assert.match(languagePicker(), /value="auto" selected/);
+  assert.match(languagePicker(), /Аўто: Беларуская/);
+  assert.equal(storyUrl('cat', getLanguage()), '?story=cat');
+  assert.equal(homeUrl(getLanguage()), './');
+  assert.equal(printUrl('cat', getLanguage()), '?story=cat&print=1');
+});
+
+test('switching to automatic mode clears the saved and query language', (context) => {
+  const { assigned, select, storage } = installBrowser(context, { search: '?story=cat&lang=en', stored: 'en', languages: ['be-BY'] });
+  bindLanguagePicker();
+  select.value = 'auto';
+  select.listener();
+
+  assert.equal(storage.has('kidstalk-language'), false);
+  assert.deepEqual(assigned, ['/kidstalk/?story=cat#book']);
 });
 
 test('navigation URLs retain the requested language', () => {

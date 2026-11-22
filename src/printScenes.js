@@ -1,4 +1,4 @@
-const svg = (content) => `<svg class="print-scene-art" viewBox="0 0 640 460" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><g stroke="#43534f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${content}</g></svg>`;
+const svg = (content) => `<svg class="print-scene-art" width="640" height="460" viewBox="0 0 640 460" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><g stroke="#43534f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${content}</g></svg>`;
 
 function ball(x, y) {
   return `<g transform="translate(${x} ${y})"><circle class="paint" r="25" fill="#df776d"/><path d="M-20-12C-4-7 10 6 18 18M-20 12C-5 5 8-8 15-19" fill="none" stroke="#fff1df"/></g>`;

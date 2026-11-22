@@ -73,7 +73,8 @@ canvas:focus-visible {
 }
 
 button svg,
-summary svg {
+summary svg,
+.soft-button svg {
   width: 22px;
   height: 22px;
   flex: 0 0 auto;
@@ -164,6 +165,15 @@ summary svg {
 
 .language-picker {
   cursor: pointer;
+}
+
+.soft-button.language-picker {
+  width: auto;
+  min-width: 164px;
+  min-height: 48px;
+  padding: 0 36px 0 15px;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .soft-button:hover {
@@ -1302,8 +1312,11 @@ footer {
   }
 
   .soft-button.language-picker {
-    width: 92px;
-    padding: 0 8px;
+    width: auto;
+    min-width: 154px;
+    min-height: 46px;
+    padding: 0 32px 0 12px;
+    font-size: 14px;
   }
 
   .brand-mark {
@@ -1942,7 +1955,7 @@ footer {
 }
 
 .story-preview-visual {
-  aspect-ratio: 1.28;
+  aspect-ratio: 640 / 460;
   position: relative;
   overflow: hidden;
   background: #e5ede8;
@@ -1964,7 +1977,7 @@ footer {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 500ms ease;
 }
 
@@ -2248,11 +2261,482 @@ footer {
   }
 
   .story-preview-visual {
-    aspect-ratio: 1.18;
+    aspect-ratio: 640 / 460;
   }
 
   .story-preview-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+/* Compact story workspace: all learning controls fit a phone landscape viewport. */
+@media (orientation: landscape) and (min-width: 600px) and (max-height: 600px) {
+  body.story-page {
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .story-shell {
+    width: 100%;
+    height: 100dvh;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .story-shell .topbar {
+    min-height: 48px;
+    height: 48px;
+    padding: 0;
+    flex: 0 0 48px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .story-shell .brand {
+    gap: 7px;
+  }
+
+  .story-shell .brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+
+  .story-shell .brand-mark svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .story-shell .brand strong {
+    font-size: 13px;
+  }
+
+  .story-shell .brand small,
+  .story-shell .soft-button > span {
+    display: none;
+  }
+
+  .story-shell .topbar > .header-actions {
+    width: auto;
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .story-shell .soft-button {
+    width: 34px;
+    min-height: 34px;
+    padding: 0;
+    border-radius: 10px;
+  }
+
+  .story-shell .soft-button.language-picker {
+    width: auto;
+    min-width: 140px;
+    min-height: 36px;
+    padding: 0 29px 0 10px;
+    font-size: 12px;
+  }
+
+  .story-shell .settings-popover {
+    position: fixed;
+    top: 44px;
+    right: 8px;
+    left: auto;
+    width: min(300px, calc(100vw - 16px));
+    max-height: calc(100dvh - 52px);
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  .story-shell main {
+    min-height: 0;
+    padding: 6px 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .story-shell .intro,
+  .story-shell .steps,
+  .story-shell footer,
+  .story-shell .board-tip {
+    display: none;
+  }
+
+  .story-shell .story-switcher {
+    min-height: 32px;
+    margin: 0 0 6px;
+    display: block;
+    flex: 0 0 32px;
+  }
+
+  .story-shell .story-switcher-label,
+  .story-shell .story-choice small {
+    display: none;
+  }
+
+  .story-shell .story-choices {
+    display: flex;
+    gap: 6px;
+  }
+
+  .story-shell .story-choice {
+    min-width: 0;
+    min-height: 32px;
+    height: 32px;
+    padding: 2px 9px;
+    flex: 1;
+    gap: 7px;
+    border-radius: 10px;
+  }
+
+  .story-shell .story-choice-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 8px;
+    font-size: 17px;
+  }
+
+  .story-shell .story-choice strong {
+    font-size: 10px;
+  }
+
+  .story-shell .phrase-panel {
+    min-height: 44px;
+    height: 44px;
+    margin: 0 0 6px;
+    padding: 4px 7px;
+    flex: 0 0 44px;
+    grid-template-columns: auto minmax(80px, 1fr) auto;
+    gap: 8px;
+    border-radius: 12px;
+  }
+
+  .story-shell .phrase-heading {
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .story-shell .phrase-heading p {
+    display: none;
+  }
+
+  .story-shell .phrase-heading h2 {
+    font-size: 12px;
+  }
+
+  .story-shell .phrase-icon {
+    width: 29px;
+    height: 29px;
+    border-radius: 8px;
+  }
+
+  .story-shell .phrase-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .story-shell .phrase-content {
+    min-height: 32px;
+    padding: 0;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .story-shell .phrase-placeholder {
+    font-size: 10px;
+  }
+
+  .story-shell .phrase-chip {
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .story-shell .chip-word {
+    padding: 0 4px 0 8px;
+    font-size: 10px;
+  }
+
+  .story-shell .chip-remove {
+    width: 22px;
+  }
+
+  .story-shell .phrase-actions {
+    gap: 4px;
+  }
+
+  .story-shell .icon-button {
+    width: 31px;
+    height: 31px;
+    border-radius: 8px;
+  }
+
+  .story-shell .speak-phrase-button {
+    min-width: 96px;
+    height: 33px;
+    padding: 0 9px;
+    border-radius: 9px;
+    font-size: 10px;
+  }
+
+  .story-shell .content-grid {
+    min-height: 0;
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .story-shell .cards-panel {
+    min-height: 0;
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+  }
+
+  .story-shell .panel-heading {
+    min-height: 22px;
+    margin: 0 2px 5px;
+    flex: 0 0 22px;
+  }
+
+  .story-shell .panel-heading h2 {
+    font-size: 13px;
+  }
+
+  .story-shell .panel-heading p {
+    display: none;
+  }
+
+  .story-shell .word-count {
+    padding: 3px 6px;
+    font-size: 8px;
+  }
+
+  .story-shell .story-lines {
+    min-height: 0;
+    display: grid;
+    flex: 1;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .story-shell .story-line {
+    min-height: 0;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .story-shell .line-index {
+    display: none;
+  }
+
+  .story-shell .line-play {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+  }
+
+  .story-shell .line-play svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .story-shell .line-words {
+    min-height: 0;
+    height: 100%;
+    grid-template-columns: repeat(var(--word-count), minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .story-shell .story-line:first-child .word-card:last-child {
+    width: auto;
+    grid-column: auto;
+    justify-self: stretch;
+  }
+
+  .story-shell .word-card {
+    min-height: 0;
+    height: 100%;
+    padding: 2px;
+    flex-direction: column;
+    gap: 1px;
+    border-radius: 9px;
+  }
+
+  .story-shell .word-icon {
+    width: clamp(20px, 6.5vh, 34px);
+    height: clamp(20px, 6.5vh, 34px);
+  }
+
+  .story-shell .word-label {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: clamp(8px, 1.5vw, 11px);
+    text-overflow: ellipsis;
+  }
+
+  .story-shell .card-sound {
+    top: 3px;
+    right: 3px;
+  }
+
+  .story-shell .card-sound svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .story-shell .visual-panel {
+    position: static;
+    min-height: 0;
+    padding: 6px;
+    display: grid;
+    grid-template-rows: 28px minmax(0, 1fr) 30px 32px;
+    border-radius: 14px;
+  }
+
+  .story-shell .scene-toolbar {
+    min-height: 28px;
+    height: 28px;
+    padding: 0 2px 4px;
+  }
+
+  .story-shell .scene-label > span:last-child {
+    display: none;
+  }
+
+  .story-shell .scene-badge {
+    padding: 2px 4px;
+    font-size: 7px;
+  }
+
+  .story-shell .rain-button {
+    min-height: 24px;
+    padding: 0 6px;
+    font-size: 8px;
+  }
+
+  .story-shell .scene-weather {
+    padding: 3px 5px;
+    font-size: 7px;
+  }
+
+  .story-shell .scene-wrap {
+    height: auto;
+    min-height: 0;
+    border-radius: 10px;
+  }
+
+  .story-shell .touch-hint {
+    display: none;
+  }
+
+  .story-shell .scene-caption-wrap {
+    min-height: 30px;
+    height: 30px;
+    padding: 3px 2px;
+    align-items: center;
+  }
+
+  .story-shell .caption-dot {
+    width: 4px;
+    height: 4px;
+    margin: 0;
+  }
+
+  .story-shell .scene-caption {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 8.5px;
+    line-height: 1.15;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .story-shell .primary-story-button {
+    min-height: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 9px;
+    font-size: 10px;
+  }
+
+  .story-shell .primary-story-button > small {
+    display: none;
+  }
+
+  .story-shell .speech-notice {
+    position: fixed;
+    z-index: 60;
+    right: 12px;
+    bottom: 8px;
+    max-width: 280px;
+    margin: 0;
+    padding: 8px;
+    font-size: 9px;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 600px) and (max-height: 360px) {
+  .story-shell .topbar {
+    min-height: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .story-shell main {
+    padding: 4px 0;
+  }
+
+  .story-shell .story-switcher {
+    min-height: 28px;
+    height: 28px;
+    flex-basis: 28px;
+  }
+
+  .story-shell .story-choice {
+    min-height: 28px;
+    height: 28px;
+  }
+
+  .story-shell .story-choice-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 15px;
+  }
+
+  .story-shell .phrase-panel {
+    min-height: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .story-shell .cards-panel {
+    padding: 4px 6px;
+  }
+
+  .story-shell .panel-heading {
+    min-height: 18px;
+    margin-bottom: 4px;
+    flex-basis: 18px;
+  }
+
+  .story-shell .story-lines {
+    gap: 3px;
+  }
+
+  .story-shell .word-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .story-shell .word-label {
+    font-size: 8px;
+    line-height: 1;
   }
 }

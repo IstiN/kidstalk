@@ -7,7 +7,7 @@ export const bunnyStory = {
   subtitle: 'Дождь и скамейка',
   description: 'Нажимай на слова, зайку и предметы вокруг него.',
   shortDescription: 'Зайка остался на скамейке под дождём. Наблюдай, называй предметы и говори о чувствах.',
-  preview: '/previews/bunny.webp',
+  preview: '/previews/bunny.svg',
   tags: ['Дождь', 'Скамейка', 'Чувства'],
   scene: 'bunny',
   initialState: { owner: 'near', rain: false, wet: 0 },
