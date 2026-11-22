@@ -2298,6 +2298,7 @@ footer {
 
   .story-shell .brand {
     gap: 0;
+    flex: 0 0 auto;
   }
 
   .story-shell .brand-mark {
@@ -2313,6 +2314,8 @@ footer {
 
   .story-shell .topbar > .header-actions {
     width: auto;
+    margin-left: auto;
+    flex: 0 0 auto;
     flex-wrap: nowrap;
     gap: 7px;
   }
@@ -2375,11 +2378,12 @@ footer {
   }
 
   .story-shell .story-switcher {
+    min-width: 0;
     min-height: 44px;
     height: 44px;
-    margin: 0 0 7px;
+    margin: 0;
     display: block;
-    flex: 0 0 44px;
+    flex: 0 1 auto;
   }
 
   .story-shell .story-choices {
@@ -2388,11 +2392,12 @@ footer {
   }
 
   .story-shell .story-choice {
-    min-width: 0;
+    width: 44px;
+    min-width: 44px;
     min-height: 44px;
     height: 44px;
     padding: 3px;
-    flex: 1;
+    flex: 0 0 44px;
     justify-content: center;
     border-radius: 13px;
   }
@@ -2576,7 +2581,7 @@ footer {
     min-height: 0;
     padding: 8px;
     display: grid;
-    grid-template-rows: 40px minmax(0, 1fr) 56px;
+    grid-template-rows: 40px minmax(0, 1fr);
     border-radius: 17px;
   }
 
@@ -2600,17 +2605,31 @@ footer {
   }
 
   .story-shell .primary-story-button {
-    min-height: 56px;
-    height: 56px;
-    margin-top: 7px;
+    position: absolute;
+    z-index: 4;
+    bottom: 14px;
+    left: 50%;
+    width: 64px;
+    min-height: 64px;
+    height: 64px;
+    margin: 0;
     padding: 0;
+    display: grid;
+    place-items: center;
     justify-content: center;
-    border-radius: 15px;
+    border: 3px solid rgba(255, 255, 255, 0.78);
+    border-radius: 50%;
+    box-shadow: 0 5px 20px rgba(39, 100, 94, 0.28);
+    transform: translateX(-50%);
+  }
+
+  .story-shell .primary-story-button:hover {
+    transform: translateX(-50%) scale(1.05);
   }
 
   .story-shell .primary-story-button > svg {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
   }
 
   .story-shell .speech-notice {
@@ -2692,13 +2711,16 @@ footer {
   .story-shell .story-switcher {
     min-height: 40px;
     height: 40px;
-    margin-bottom: 5px;
-    flex-basis: 40px;
+    margin: 0;
+    flex: 0 1 auto;
   }
 
   .story-shell .story-choice {
+    width: 40px;
+    min-width: 40px;
     min-height: 40px;
     height: 40px;
+    flex-basis: 40px;
   }
 
   .story-shell .story-choice-icon {
@@ -2760,7 +2782,7 @@ footer {
   .story-shell .visual-panel {
     order: -1;
     padding: 5px;
-    grid-template-rows: 26px minmax(0, 1fr) 42px;
+    grid-template-rows: 26px minmax(0, 1fr);
   }
 
   .story-shell .scene-toolbar {
@@ -2775,10 +2797,11 @@ footer {
   }
 
   .story-shell .primary-story-button {
-    min-height: 42px;
-    height: 42px;
-    margin-top: 4px;
-    border-radius: 11px;
+    bottom: 10px;
+    width: 52px;
+    min-height: 52px;
+    height: 52px;
+    border-radius: 50%;
   }
 
   .story-shell .cards-panel {
@@ -2855,13 +2878,16 @@ footer {
   .story-shell .story-switcher {
     min-height: 32px;
     height: 32px;
-    margin-bottom: 4px;
-    flex-basis: 32px;
+    margin: 0;
+    flex: 0 1 auto;
   }
 
   .story-shell .story-choice {
+    width: 32px;
+    min-width: 32px;
     min-height: 32px;
     height: 32px;
+    flex-basis: 32px;
     border-radius: 10px;
   }
 
@@ -2960,7 +2986,7 @@ footer {
 
   .story-shell .visual-panel {
     padding: 5px;
-    grid-template-rows: 26px minmax(0, 1fr) 36px;
+    grid-template-rows: 26px minmax(0, 1fr);
     border-radius: 13px;
   }
 
@@ -2976,19 +3002,56 @@ footer {
   }
 
   .story-shell .primary-story-button {
-    min-height: 36px;
-    height: 36px;
-    margin-top: 4px;
-    border-radius: 10px;
+    bottom: 8px;
+    width: 44px;
+    min-height: 44px;
+    height: 44px;
+    border-width: 2px;
+    border-radius: 50%;
   }
 }
 
 @media (max-width: 360px) and (orientation: portrait) {
+  .story-shell .topbar {
+    gap: 4px;
+  }
+
+  .story-shell .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .story-shell .story-choices {
+    gap: 4px;
+  }
+
+  .story-shell .story-choice {
+    width: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .story-shell .story-choice-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+  }
+
+  .story-shell .topbar > .header-actions {
+    gap: 3px;
+  }
+
+  .story-shell .soft-button {
+    width: 32px;
+    min-height: 32px;
+  }
+
   .story-shell .soft-button.language-picker {
-    min-width: 112px;
-    min-height: 40px;
-    padding-right: 24px;
-    font-size: 10px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
   }
 }
 
@@ -3169,5 +3232,64 @@ body.catalog-page {
     width: 46px;
     height: 46px;
     bottom: 10px;
+  }
+}
+
+/* The native language menu stays accessible, while only its globe is visible. */
+.soft-button.language-control {
+  position: relative;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px;
+  min-height: 44px !important;
+  padding: 0 !important;
+  flex: 0 0 44px;
+  overflow: hidden;
+  background-image: none;
+}
+
+.language-control > svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.language-control .language-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.language-control:focus-within {
+  outline: 3px solid #dd9676;
+  outline-offset: 3px;
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .story-shell .soft-button.language-control {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px;
+    min-height: 32px !important;
+    flex-basis: 32px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .story-shell .soft-button.language-control {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px;
+    min-height: 34px !important;
+    flex-basis: 34px;
   }
 }

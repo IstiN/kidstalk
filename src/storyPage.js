@@ -39,6 +39,16 @@ export async function renderStoryPage(app, requestedStory) {
           </span>
           <span><strong>${t('brand.name')}</strong><small>${t('brand.tagline')}</small></span>
         </a>
+        <nav class="story-switcher" aria-label="${t('story.switcherAria')}">
+          <span class="story-switcher-label">${t('story.switcherLabel')}</span>
+          <div class="story-choices">
+            ${localizedStories.map((item) => `
+              <a class="story-choice ${item.id === storyDefinition.id ? 'is-active' : ''}" href="${storyUrl(item.id, language)}" aria-label="${item.title}" ${item.id === storyDefinition.id ? 'aria-current="page"' : ''}>
+                <span class="story-choice-icon" aria-hidden="true">${item.emoji}</span>
+                <span><strong>${item.title}</strong><small>${item.subtitle}</small></span>
+              </a>`).join('')}
+          </div>
+        </nav>
         <div class="header-actions">
           ${languagePicker()}
           <a class="soft-button print-view-link" id="print-view-link" href="${printUrl(storyDefinition.id, language)}" aria-label="${t('print.view')}">${printIcon}<span>${t('print.view')}</span></a>
@@ -59,17 +69,6 @@ export async function renderStoryPage(app, requestedStory) {
       </header>
 
       <main>
-        <nav class="story-switcher" aria-label="${t('story.switcherAria')}">
-          <span class="story-switcher-label">${t('story.switcherLabel')}</span>
-          <div class="story-choices">
-            ${localizedStories.map((item) => `
-              <a class="story-choice ${item.id === storyDefinition.id ? 'is-active' : ''}" href="${storyUrl(item.id, language)}" aria-label="${item.title}" ${item.id === storyDefinition.id ? 'aria-current="page"' : ''}>
-                <span class="story-choice-icon" aria-hidden="true">${item.emoji}</span>
-                <span><strong>${item.title}</strong><small>${item.subtitle}</small></span>
-              </a>`).join('')}
-          </div>
-        </nav>
-
         <section class="intro" aria-labelledby="page-title">
           <div>
             <div class="eyebrow"><span></span> ${t('story.eyebrow')}</div>
@@ -130,12 +129,12 @@ export async function renderStoryPage(app, requestedStory) {
               <div id="story-scene" class="bunny-scene"></div>
               <div class="scene-vignette" aria-hidden="true"></div>
               <div class="touch-hint">${uiIcons.hand}<span>${t('story.touchHint')}</span></div>
+              <button class="primary-story-button" id="play-story" type="button" aria-label="${t('story.playStory')}">${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small></button>
             </div>
             <div class="scene-caption-wrap">
               <span class="caption-dot" aria-hidden="true"></span>
               <p class="scene-caption" id="scene-caption">${storyDefinition.initialCaption}</p>
             </div>
-            <button class="primary-story-button" id="play-story" type="button" aria-label="${t('story.playStory')}">${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small></button>
           </aside>
         </div>
 

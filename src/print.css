@@ -397,19 +397,163 @@
   color: #9ca6a1;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
+  .print-shell {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   .print-toolbar {
+    width: calc(100% - 24px);
     padding: 14px 0;
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
+    gap: 12px;
   }
 
   .print-toolbar-actions {
-    justify-content: flex-start;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .print-mode-picker {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .print-mode-picker > span {
+    display: none;
+  }
+
+  .print-mode-button {
+    flex: 1;
+    padding: 0 8px;
+  }
+
+  .print-action {
+    padding: 0 14px;
+  }
+
+  .print-dialog-hint {
+    width: calc(100% - 24px);
+    margin-bottom: 14px;
   }
 
   .print-book {
-    align-items: flex-start;
+    width: 100%;
+    padding: 0 12px 24px;
+    align-items: stretch;
+    gap: 16px;
+    overflow: visible;
+  }
+
+  .print-page {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 24px 20px;
+    overflow: hidden;
+  }
+
+  .print-page::before {
+    inset: 8px;
+  }
+
+  .print-page-footer {
+    position: static;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    font-size: 9px;
+  }
+
+  .print-cover {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .print-cover-copy {
+    text-align: center;
+  }
+
+  .print-cover-kicker {
+    margin-bottom: 14px;
+  }
+
+  .print-cover h1 {
+    margin: 8px 0 14px;
+    font-size: clamp(28px, 8vw, 42px);
+    overflow-wrap: anywhere;
+  }
+
+  .print-cover-tags {
+    justify-content: center;
+  }
+
+  .print-cover-scene {
+    height: auto;
+    aspect-ratio: 640 / 460;
+  }
+
+  .print-story-header {
+    height: auto;
+    min-height: 0;
+    padding-bottom: 14px;
+    gap: 12px;
+  }
+
+  .print-story-header > div {
+    min-width: 0;
+  }
+
+  .print-story-header h2 {
+    font-size: clamp(20px, 6vw, 30px);
+    overflow-wrap: anywhere;
+  }
+
+  .print-story-layout {
+    height: auto;
+    margin-top: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .print-word-grid {
+    gap: 10px;
+  }
+
+  .print-word-card {
+    padding: 12px;
+    grid-template-columns: 72px minmax(0, 1fr);
+    column-gap: 12px;
+  }
+
+  .print-word-grid .print-word-symbol {
+    width: 68px;
+    height: 68px;
+  }
+
+  .print-word-card h3 {
+    font-size: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .print-word-card p {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .print-scene-figure {
+    display: block;
+  }
+
+  .print-scene-figure .print-scene {
+    aspect-ratio: 640 / 460;
+  }
+
+  .print-story-hint {
+    margin-top: 8px;
+    font-size: 10px;
   }
 }
 

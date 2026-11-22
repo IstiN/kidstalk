@@ -957,10 +957,13 @@ export function languagePicker() {
   const current = getLanguage();
   const explicit = explicitLanguage();
   const currentLabel = LANGUAGES.find(({ id }) => id === current)?.label || current;
-  return `<select class="soft-button language-picker" id="language-picker" data-language-picker aria-label="${translate(current, 'language.label')}">
-    <option value="auto" ${explicit ? '' : 'selected'}>${translate(current, 'language.auto', { language: currentLabel })}</option>
-    ${LANGUAGES.map(({ id, label }) => `<option value="${id}" ${id === current && explicit ? 'selected' : ''}>${label}</option>`).join('')}
-  </select>`;
+  return `<label class="soft-button language-picker language-control">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.4 3 14.6 0 18M12 3c-3 3.4-3 14.6 0 18"/></svg>
+    <select class="language-select" id="language-picker" data-language-picker aria-label="${translate(current, 'language.label')}">
+      <option value="auto" ${explicit ? '' : 'selected'}>${translate(current, 'language.auto', { language: currentLabel })}</option>
+      ${LANGUAGES.map(({ id, label }) => `<option value="${id}" ${id === current && explicit ? 'selected' : ''}>${label}</option>`).join('')}
+    </select>
+  </label>`;
 }
 
 export function bindLanguagePicker() {

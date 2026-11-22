@@ -130,6 +130,8 @@ test('Belarusian story localization covers every source word and caption', () =>
 test('language picker marks the current language and preserves print query parameters', (context) => {
   const { assigned, select, storage } = installBrowser(context, { search: '?story=cat&print=1&lang=ru' });
   assert.match(languagePicker(), /value="ru" selected/);
+  assert.match(languagePicker(), /class="soft-button language-picker language-control"/);
+  assert.match(languagePicker(), /<svg[^>]+aria-hidden="true">/);
   bindLanguagePicker();
   bindLanguagePicker();
   select.value = 'be';
