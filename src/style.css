@@ -2494,7 +2494,7 @@ footer {
     min-height: 0;
     display: grid;
     flex: 1;
-    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
     gap: 10px;
   }
@@ -2625,6 +2625,26 @@ footer {
   }
 }
 
+@media (orientation: portrait) {
+  .story-shell .content-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  .story-shell .visual-panel {
+    order: -1;
+  }
+
+  .story-shell .word-card {
+    container-type: size;
+  }
+
+  .story-shell .word-icon {
+    width: min(80cqw, 80cqh, 96px);
+    height: min(80cqw, 80cqh, 96px);
+  }
+}
+
 @media (max-width: 599px) and (orientation: portrait) {
   .story-shell {
     padding: 0 8px;
@@ -2733,7 +2753,7 @@ footer {
 
   .story-shell .content-grid {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(140px, 0.68fr) minmax(0, 1.32fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
@@ -2901,7 +2921,7 @@ footer {
   }
 
   .story-shell .content-grid {
-    grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
