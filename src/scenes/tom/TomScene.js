@@ -60,9 +60,13 @@ function createTom() {
   });
   eyes.forEach((eye) => { eye.userData.baseScale = eye.scale.clone(); });
   mesh(sphere, pink, head, [0, 0.02, 0.7], [0.13, 0.085, 0.065]);
-  const mouth = mesh(sphere, dark, head, [0, -0.25, 0.62], [0.15, 0.025, 0.035]);
+  const mouth = new THREE.Group();
+  mouth.position.set(0, -0.25, 0.62);
+  head.add(mouth);
   mouth.userData.baseScale = mouth.scale.clone();
-  mesh(sphere, white, head, [0, -0.29, 0.63], [0.09, 0.018, 0.02]);
+  mesh(sphere, dark, mouth, [0, 0, 0], [0.15, 0.04, 0.035]);
+  [-0.045, 0.045].forEach((x) => mesh(new THREE.BoxGeometry(0.075, 0.025, 0.025), white, mouth, [x, 0.012, 0.06]));
+  mesh(sphere, pink, mouth, [0, -0.027, 0.055], [0.085, 0.014, 0.018]);
 
   const whiskerPoints = [];
   [-1, 1].forEach((side) => {
@@ -134,6 +138,8 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xe8e5f1);
   const camera = new THREE.OrthographicCamera(-3, 3, 3, -3, 0.1, 60);
+  let viewportAspect = 1;
+  let viewportFrustum = 5.2;
   camera.position.set(3.6, 2.8, 8);
   camera.lookAt(0, 1.35, 0);
   scene.add(new THREE.HemisphereLight(0xfff8ee, 0x9a9cb5, 2.2));
@@ -152,8 +158,8 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
   const rug = mesh(new THREE.CircleGeometry(1, 64), material(0x9ebfc0), scene, [0, -0.035, 0.5], [2.1, 1.35, 1]);
   rug.rotation.x = -Math.PI / 2;
   rug.castShadow = false;
-  mesh(new THREE.BoxGeometry(2.1, 0.16, 1.2), material(0xb2c8d2), scene, [-2.2, 0.08, -1.2]);
-  mesh(new THREE.SphereGeometry(1, 24, 16), material(0xf0d5a6), scene, [-2.2, 0.3, -1.2], [0.85, 0.22, 0.45]);
+  mesh(new THREE.BoxGeometry(2.1, 0.16, 1.2), material(0xb2c8d2), scene, [-1.55, 0.08, -1.2]);
+  mesh(new THREE.SphereGeometry(1, 24, 16), material(0xf0d5a6), scene, [-1.65, 0.3, -1.2], [0.85, 0.22, 0.45]);
   const sink = new THREE.Group();
   sink.position.set(2.1, 0, -1.1);
   scene.add(sink);
@@ -177,6 +183,13 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
   mesh(new THREE.CapsuleGeometry(0.035, 0.45, 5, 10), material(0x6fa9ba), toothbrush);
   mesh(new THREE.BoxGeometry(0.16, 0.1, 0.08), material(0xf5f1e9), toothbrush, [0, 0.3, 0]);
   toothbrush.rotation.z = Math.PI / 2;
+
+  const microphone = new THREE.Group();
+  scene.add(microphone);
+  mesh(new THREE.CapsuleGeometry(0.04, 0.4, 5, 10), material(0x46565d), microphone);
+  mesh(new THREE.SphereGeometry(0.13, 20, 14), material(0x9daeb4), microphone, [0, 0.31, 0]);
+  mesh(new THREE.TorusGeometry(0.13, 0.018, 7, 24), material(0x5f7077), microphone, [0, 0.31, 0]);
+  microphone.rotation.z = -0.35;
 
   const bowl = new THREE.Group();
   scene.add(bowl);
@@ -203,17 +216,35 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
     note.userData.basePosition = note.position.clone();
   });
 
+  function focusCamera(envelope, zoom) {
+    camera.zoom = 1 + (zoom - 1) * envelope;
+    camera.updateProjectionMatrix();
+  }
+
+  function reachArm(arm, envelope, targetPosition, extension = 1.3) {
+    const rest = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, arm.userData.baseRotationZ));
+    const direction = new THREE.Vector3(...targetPosition).sub(arm.position).normalize();
+    const reach = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), direction);
+    arm.quaternion.slerpQuaternions(rest, reach, envelope);
+    arm.scale.y = 1 + (extension - 1) * envelope;
+  }
+
   function restorePose() {
+    focusCamera(0, 1);
     tom.group.position.set(0, 0, 0);
     tom.group.rotation.set(0, 0, 0);
     tom.head.rotation.set(0, 0, 0);
-    tom.arms.forEach((arm) => { arm.rotation.set(0, 0, arm.userData.baseRotationZ); });
+    tom.arms.forEach((arm) => {
+      arm.rotation.set(0, 0, arm.userData.baseRotationZ);
+      arm.scale.set(1, 1, 1);
+    });
     tom.legs.forEach((leg) => leg.rotation.set(0, 0, 0));
     tom.eyes.forEach((eye) => eye.scale.copy(eye.userData.baseScale));
     tom.mouth.scale.copy(tom.mouth.userData.baseScale);
     ball.position.set(1.1, 0.25, 0.65);
     ball.rotation.set(0, 0, 0);
     toothbrush.visible = false;
+    microphone.visible = false;
     bowl.visible = false;
     bowl.position.set(0.85, 0.12, 0.65);
     bubbles.visible = false;
@@ -228,7 +259,10 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
   function animateAction(duration, update, { show = [] } = {}) {
     show.forEach((prop) => { prop.visible = true; });
     return motion.tween({ duration, ease: (value) => value, update: (_, progress) => update(progress, Math.sin(progress * Math.PI)) })
-      .then((result) => { restorePose(); return result; });
+      .then((result) => {
+        if (result) restorePose();
+        return result;
+      });
   }
 
   const actions = {
@@ -259,9 +293,10 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
       tom.head.rotation.z = -envelope * 0.12;
     }),
     laugh: () => animateAction(1800, (progress, envelope) => {
+      focusCamera(envelope, 1.45);
       tom.group.position.y = Math.abs(Math.sin(progress * Math.PI * 4)) * 0.09 * envelope;
       tom.head.rotation.x = -0.14 * envelope;
-      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * 4);
+      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * 5);
     }),
     dance: () => animateAction(2300, (progress, envelope) => {
       const beat = Math.sin(progress * Math.PI * 4);
@@ -272,9 +307,10 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
       tom.arms[1].rotation.z = tom.arms[1].userData.baseRotationZ - beat * 1.15 * envelope;
     }),
     'brush-teeth': () => animateAction(2400, (progress, envelope) => {
-      tom.arms[1].rotation.z = tom.arms[1].userData.baseRotationZ + envelope * 2.0;
+      focusCamera(envelope, 1.5);
+      reachArm(tom.arms[1], envelope, [0.05, 1.98, 0.75]);
       toothbrush.position.set(Math.sin(progress * Math.PI * 8) * 0.09 * envelope, 2.08, 0.82);
-      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * 2);
+      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * 2.5);
     }, { show: [toothbrush] }),
     wash: () => animateAction(2200, (progress, envelope) => {
       const scrub = Math.sin(progress * Math.PI * 6);
@@ -286,15 +322,20 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
       });
     }, { show: [bubbles] }),
     eat: () => animateAction(2100, (progress, envelope) => {
+      focusCamera(envelope, 1.35);
       tom.group.rotation.x = envelope * 0.09;
       tom.head.rotation.x = envelope * (0.25 + Math.abs(Math.sin(progress * Math.PI * 4)) * 0.15);
-      tom.arms[1].rotation.z = tom.arms[1].userData.baseRotationZ + envelope * 0.8;
+      reachArm(tom.arms[1], envelope, [0.55, 1.1, 0.75], 1.25);
+      bowl.position.set(0.55, 0.85 + envelope * 0.25, 0.75);
+      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + Math.abs(Math.sin(progress * Math.PI * 4)) * envelope * 1.5);
     }, { show: [bowl] }),
     sleep: () => animateAction(2400, (progress, envelope) => {
-      tom.group.position.y = -0.25 * envelope;
-      tom.group.rotation.z = -0.18 * envelope;
-      tom.head.rotation.z = -0.2 * envelope;
-      tom.eyes.forEach((eye) => { eye.scale.y = eye.userData.baseScale.y * (1 - envelope * 0.93); });
+      const sleepZoom = viewportAspect > 1.3 ? 1.25 : Math.min(1, (viewportAspect * viewportFrustum) / 5.2);
+      focusCamera(envelope, sleepZoom);
+      tom.group.position.set(0.55 * envelope, 0.38 * envelope, -0.8 * envelope);
+      tom.group.rotation.z = 1.45 * envelope;
+      tom.head.rotation.z = -0.12 * envelope;
+      tom.eyes.forEach((eye) => { eye.scale.y = eye.userData.baseScale.y * (1 - envelope * 0.995); });
     }),
     ball: () => animateAction(2000, (progress, envelope) => {
       tom.legs[1].rotation.x = -envelope * 1.05;
@@ -303,13 +344,15 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
       ball.rotation.z = -progress * 7;
     }),
     sing: () => animateAction(2300, (progress, envelope) => {
+      focusCamera(envelope, 1.3);
       const note = Math.sin(progress * Math.PI * 6);
-      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * (3 + note));
-      tom.arms[0].rotation.z = tom.arms[0].userData.baseRotationZ - envelope * 1.25;
-      tom.arms[1].rotation.z = tom.arms[1].userData.baseRotationZ + envelope * 1.25;
+      tom.mouth.scale.y = tom.mouth.userData.baseScale.y * (1 + envelope * (4 + note));
+      tom.arms[0].rotation.z = tom.arms[0].userData.baseRotationZ - envelope * 1.1;
+      reachArm(tom.arms[1], envelope, [0.2, 1.55, 0.84], 1.2);
+      microphone.position.set(0.2, 1.55, 0.84);
       tom.head.rotation.z = note * 0.09 * envelope;
       notes.children.forEach((item, index) => { item.position.y = item.userData.basePosition.y + progress * (0.35 + index * 0.15); });
-    }, { show: [notes] }),
+    }, { show: [microphone, notes] }),
   };
 
   async function perform(action) {
@@ -362,6 +405,8 @@ export function createTomScene(container, { onElementClick = () => {} } = {}) {
     if (!width || !height) return;
     const aspect = width / height;
     const frustum = aspect < 0.75 ? 5.8 : 5.2;
+    viewportAspect = aspect;
+    viewportFrustum = frustum;
     camera.left = (-frustum * aspect) / 2;
     camera.right = (frustum * aspect) / 2;
     camera.top = frustum / 2 + 0.2;
