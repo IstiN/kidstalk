@@ -44,6 +44,7 @@ const WORD_DICTIONARY = [
 ];
 
 export const CHARACTER_OPTIONS = [
+  { id: 'smart', emoji: '🏠', scene: 'smart' },
   { id: 'tom', emoji: '🐱', scene: 'tom' },
   { id: 'cat', emoji: '🐈', scene: 'cat' },
   { id: 'bunny', emoji: '🐰', scene: 'bunny' },
@@ -89,6 +90,7 @@ export function findLocalWordMatch(word) {
 }
 
 const CHARACTER_ACTION_MAPPERS = {
+  smart: (action) => action || 'hello',
   cards: () => 'show-card',
   tom: (action) => (ACTION_FOR_SCENE.tom.includes(action) ? action : 'hello'),
   cat: (action) => ({

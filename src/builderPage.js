@@ -22,20 +22,20 @@ import { renderSymbol } from './symbols/renderSymbol.js';
 
 const PRESETS = {
   ru: [
-    { label: '📺 Папа, включи телевизор', words: 'Папа, Включи, Телевизор', character: 'tom', emoji: '📺' },
-    { label: '🥤 Мама, дай пить', words: 'Мама, Дай, Пить', character: 'tom', emoji: '🥤' },
+    { label: '📺 Папа, включи телевизор', words: 'Папа, Включи, Телевизор', character: 'smart', emoji: '📺' },
+    { label: '🥤 Мама, дай пить', words: 'Мама, Дай, Пить', character: 'smart', emoji: '🥤' },
     { label: '⚽ Пойдём играть в мяч', words: 'Пойдём, Играть, Мяч', character: 'cat', emoji: '⚽' },
     { label: '🪥 Чистить зубы и спать', words: 'Чистить, Зубы, Спать', character: 'tom', emoji: '🪥' },
   ],
   en: [
-    { label: '📺 Dad, turn on TV', words: 'Dad, Turn on, TV', character: 'tom', emoji: '📺' },
-    { label: '🥤 Mom, give water', words: 'Mom, Give, Water', character: 'tom', emoji: '🥤' },
+    { label: '📺 Dad, turn on TV', words: 'Dad, Turn on, TV', character: 'smart', emoji: '📺' },
+    { label: '🥤 Mom, give water', words: 'Mom, Give, Water', character: 'smart', emoji: '🥤' },
     { label: '⚽ Go play ball', words: 'Go, Play, Ball', character: 'cat', emoji: '⚽' },
     { label: '🪥 Brush teeth and sleep', words: 'Brush, Teeth, Sleep', character: 'tom', emoji: '🪥' },
   ],
   be: [
-    { label: '📺 Тата, уключы тэлевізар', words: 'Тата, Уключы, Тэлевізар', character: 'tom', emoji: '📺' },
-    { label: '🥤 Мама, дай піць', words: 'Мама, Дай, Піць', character: 'tom', emoji: '🥤' },
+    { label: '📺 Тата, уключы тэлевізар', words: 'Тата, Уключы, Тэлевізар', character: 'smart', emoji: '📺' },
+    { label: '🥤 Мама, дай піць', words: 'Мама, Дай, Піць', character: 'smart', emoji: '🥤' },
     { label: '⚽ Ідзі гуляць у мяч', words: 'Ідзі, Гуляць, Мяч', character: 'cat', emoji: '⚽' },
     { label: '🪥 Чысціць зубы і спаць', words: 'Чысціць, Зубы, Спаць', character: 'tom', emoji: '🪥' },
   ],
@@ -43,9 +43,9 @@ const PRESETS = {
 
 function characterLabel(id, language) {
   const labels = {
-    ru: { tom: 'Кот Том (3D)', cat: 'Рыжий котик (3D)', bunny: 'Зайка (3D)', cards: 'Крупные карточки' },
-    en: { tom: 'Tom Cat (3D)', cat: 'Ginger Cat (3D)', bunny: 'Bunny (3D)', cards: 'Big Cards' },
-    be: { tom: 'Кот Том (3D)', cat: 'Руды коцік (3D)', bunny: 'Зайка (3D)', cards: 'Вялікія карткі' },
+    ru: { smart: 'Умная 3D-сцена', tom: 'Кот Том (3D)', cat: 'Рыжий котик (3D)', bunny: 'Зайка (3D)', cards: 'Крупные карточки' },
+    en: { smart: 'Smart 3D Scene', tom: 'Tom Cat (3D)', cat: 'Ginger Cat (3D)', bunny: 'Bunny (3D)', cards: 'Big Cards' },
+    be: { smart: 'Разумная 3D-сцэна', tom: 'Кот Том (3D)', cat: 'Руды коцік (3D)', bunny: 'Зайка (3D)', cards: 'Вялікія карткі' },
   };
   return (labels[language] || labels.ru)[id] || id;
 }
@@ -61,7 +61,7 @@ export function renderBuilderPage(app, editId = null) {
   const state = {
     id: editing?.id || null,
     title: editing?.title || '',
-    character: editing?.character || 'tom',
+    character: editing?.character || 'smart',
     emoji: editing?.emoji || '✨',
     cards: editing
       ? editing.words.map((item) => ({ ...item, alternatives: [item.symbol] }))

@@ -69,7 +69,8 @@ test('defaultSymbolForWord and resolveSymbolForWord combine local and ARASAAC se
   assert.deepEqual(thrown, []);
 });
 
-test('mapActionForCharacter adapts actions for tom, cat, bunny, and cards', () => {
+test('mapActionForCharacter adapts actions for smart, tom, cat, bunny, and cards', () => {
+  assert.equal(mapActionForCharacter('dance', 'smart'), 'dance');
   assert.equal(mapActionForCharacter('dance', 'tom'), 'dance');
   assert.equal(mapActionForCharacter('unknown', 'tom'), 'hello');
   assert.equal(mapActionForCharacter('ball', 'cat'), 'roll-ball');

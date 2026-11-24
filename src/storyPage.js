@@ -186,6 +186,7 @@ export async function renderStoryPage(app, requestedStory) {
   let rainOn = false;
 
   const scene = await createScene(storyDefinition.scene, document.querySelector('#story-scene'), {
+    story: storyDefinition,
     onElementClick: (elementId) => {
       const wordId = storyDefinition.elements?.[elementId];
       const word = wordById.get(wordId);

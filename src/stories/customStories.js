@@ -7,7 +7,7 @@ const DEFAULT_CUSTOM_STORIES = [
     id: 'custom-tv',
     title: 'Папа, включи телевизор',
     emoji: '📺',
-    character: 'tom',
+    character: 'smart',
     words: [
       { word: 'Папа', ...defaultSymbolForWord('Папа') },
       { word: 'Включи', ...defaultSymbolForWord('Включи') },
@@ -77,7 +77,7 @@ function resolveCustomId(rawId) {
 }
 
 function resolveCharacter(character) {
-  return ['tom', 'cat', 'bunny', 'cards'].includes(character) ? character : 'tom';
+  return ['smart', 'tom', 'cat', 'bunny', 'cards'].includes(character) ? character : 'smart';
 }
 
 function normalizeCustomRecord(record, cleanWords) {
@@ -115,7 +115,7 @@ export function deleteCustomStoryRecord(id, storage) {
 }
 
 export function buildCustomStoryDefinition(record) {
-  const character = record.character || 'tom';
+  const character = resolveCharacter(record.character);
   const words = record.words.map((item, index) => ({
     id: `w-${index + 1}`,
     word: item.word,
@@ -139,14 +139,14 @@ export function buildCustomStoryDefinition(record) {
     id: record.id,
     custom: true,
     character,
-    scene: character === 'cards' ? 'cards' : character,
+    scene: character,
     title: record.title,
     subtitle: words.map((item) => item.word).join(' · '),
     shortDescription: words.map((item) => item.word).join(' '),
     author: 'Моя история',
     format: `${words.length} сл.`,
     emoji: record.emoji || '✨',
-    preview: character === 'cards' ? '/previews/tom.svg' : `/previews/${character}.svg`,
+    preview: ['tom', 'cat', 'bunny'].includes(character) ? `/previews/${character}.svg` : '/previews/tom.svg',
     tags: ['Моя история', 'Карточки'],
     initialState: {},
     initialCaption: record.title,
