@@ -1,8 +1,10 @@
-import { stories } from './stories/index.js';
+import { getAllStories } from './stories/index.js';
 import { uiIcons } from './icons.js';
+import { renderSymbol } from './symbols/renderSymbol.js';
 import {
   applyLanguage,
   bindLanguagePicker,
+  builderUrl,
   homeUrl,
   languagePicker,
   localizeStory,
@@ -29,7 +31,8 @@ function brandMarkup() {
 
 export function renderCatalog(app) {
   const language = applyLanguage();
-  const localizedStories = stories.map((story) => localizeStory(story, language));
+  const allStories = getAllStories();
+  const localizedStories = allStories.map((story) => localizeStory(story, language));
   document.title = t('catalog.documentTitle');
   document.body.classList.add('catalog-page');
   app.innerHTML = `
@@ -37,8 +40,11 @@ export function renderCatalog(app) {
       <header class="topbar catalog-topbar">
         ${brandMarkup()}
         <div class="header-actions">
+          <a class="soft-button builder-create-btn" id="open-builder-btn" href="${builderUrl(null, language)}" aria-label="${t('builder.openButton')}" title="${t('builder.openButton')}">
+            <span aria-hidden="true">＋</span><span>${t('builder.openButton')}</span>
+          </a>
           ${languagePicker()}
-          <a class="soft-button catalog-header-link" href="#stories">${t('catalog.storiesLink')} <span>${stories.length}</span></a>
+          <a class="soft-button catalog-header-link" href="#stories">${t('catalog.storiesLink')} <span>${allStories.length}</span></a>
         </div>
       </header>
 
@@ -80,7 +86,9 @@ export function renderCatalog(app) {
                 <article class="story-preview-card story-preview-card--${story.id}">
                   <a href="${storyUrl(story.id, language)}" aria-label="${t('catalog.openStoryAria', { title: story.title })}">
                     <div class="story-preview-visual">
-                      <img src="${assetUrl(story.preview)}" alt="${t('catalog.previewAlt', { title: story.title })}" width="640" height="460" />
+                      ${story.custom
+                        ? `<div class="custom-preview-collage" aria-hidden="true">${story.lines.flatMap((line) => line.words).slice(0, 4).map((w) => `<span class="custom-preview-tile">${renderSymbol(w.symbol)}</span>`).join('')}</div>`
+                        : `<img src="${assetUrl(story.preview)}" alt="${t('catalog.previewAlt', { title: story.title })}" width="640" height="460" />`}
                       <span class="story-count-badge">${t('common.words', { count: wordCount })}</span>
                       <span class="story-open-button" aria-hidden="true">${uiIcons.play}</span>
                     </div>

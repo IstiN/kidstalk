@@ -1,12 +1,13 @@
 import { StoryPlayer } from './app/StoryPlayer.js';
 import { createScene } from './scenes/index.js';
 import { SpeechController } from './speech.js';
-import { getStory, stories } from './stories/index.js';
+import { getAllStories, getStory } from './stories/index.js';
 import { renderSymbol } from './symbols/renderSymbol.js';
 import { uiIcons } from './icons.js';
 import {
   applyLanguage,
   bindLanguagePicker,
+  builderUrl,
   homeUrl,
   languagePicker,
   localizeStory,
@@ -21,7 +22,7 @@ export async function renderStoryPage(app, requestedStory) {
   const language = applyLanguage();
   const speech = new SpeechController(language);
   const storyDefinition = localizeStory(getStory(requestedStory), language);
-  const localizedStories = stories.map((item) => localizeStory(item, language));
+  const localizedStories = getAllStories().map((item) => localizeStory(item, language));
   const story = storyDefinition.lines;
   const allWords = story.flatMap((line) => line.words);
   const interactiveWords = [...allWords, ...(storyDefinition.extraWords || [])];
@@ -47,6 +48,10 @@ export async function renderStoryPage(app, requestedStory) {
                 <span class="story-choice-icon" aria-hidden="true">${item.emoji}</span>
                 <span><strong>${item.title}</strong><small>${item.subtitle}</small></span>
               </a>`).join('')}
+            <a class="story-choice story-choice-add" id="story-builder-link" href="${builderUrl(storyDefinition.custom ? storyDefinition.id : null, language)}" aria-label="${storyDefinition.custom ? t('builder.editTitle') : t('builder.openButton')}" title="${storyDefinition.custom ? t('builder.editTitle') : t('builder.openButton')}">
+              <span class="story-choice-icon" aria-hidden="true">${storyDefinition.custom ? '✎' : '＋'}</span>
+              <span><strong>${t('builder.openButton')}</strong></span>
+            </a>
           </div>
         </nav>
         <div class="header-actions">
@@ -128,6 +133,7 @@ export async function renderStoryPage(app, requestedStory) {
             <div class="scene-wrap">
               <div id="story-scene" class="bunny-scene"></div>
               <div class="scene-vignette" aria-hidden="true"></div>
+              ${storyDefinition.custom && storyDefinition.scene !== 'cards' ? '<div class="scene-card-spotlight" id="scene-card-spotlight" aria-hidden="true"></div>' : ''}
               <div class="touch-hint">${uiIcons.hand}<span>${t('story.touchHint')}</span></div>
               <button class="primary-story-button" id="play-story" type="button" aria-label="${t('story.playStory')}">${uiIcons.play}<span>${t('story.playStory')}</span><small>${t('common.words', { count: allWords.length })}</small></button>
             </div>
@@ -162,6 +168,7 @@ export async function renderStoryPage(app, requestedStory) {
   const speakPhraseButton = document.querySelector('#speak-phrase-button');
   const playStoryButton = document.querySelector('#play-story');
   const sceneCaption = document.querySelector('#scene-caption');
+  const cardSpotlight = document.querySelector('#scene-card-spotlight');
   const liveRegion = document.querySelector('#live-region');
   const rainButton = document.querySelector('#rain-toggle');
   const muteButton = document.querySelector('#mute-button');
@@ -271,6 +278,16 @@ export async function renderStoryPage(app, requestedStory) {
     });
   }
 
+  function showSpotlight(word) {
+    if (!cardSpotlight) return;
+    if (!word) {
+      cardSpotlight.classList.remove('is-visible');
+      return;
+    }
+    cardSpotlight.innerHTML = `<span class="spotlight-icon">${renderSymbol(word.symbol)}</span><span class="spotlight-word">${word.word}</span>`;
+    cardSpotlight.classList.add('is-visible');
+  }
+
   function handlePlayerEvent({ type, word, source, text }) {
     switch (type) {
       case 'stop':
@@ -278,6 +295,7 @@ export async function renderStoryPage(app, requestedStory) {
         playingSource = null;
         phraseSpeaking = false;
         clearActiveCard();
+        showSpotlight(null);
         speakPhraseButton.classList.remove('is-speaking');
         speakPhraseButton.setAttribute('aria-label', t('story.speak'));
         speakPhraseButton.innerHTML = `${uiIcons.speaker}<span>${t('story.speak')}</span>`;
@@ -290,18 +308,21 @@ export async function renderStoryPage(app, requestedStory) {
         break;
       case 'wordStart':
         highlightCard(word.id);
+        showSpotlight(word);
         setCaption(word.caption);
         announce(word.word);
         break;
       case 'wordEnd':
         clearActiveCard();
+        if (!playing) showSpotlight(null);
         break;
       case 'sequenceEnd':
         playing = false;
         playingSource = null;
         clearActiveCard();
+        showSpotlight(null);
         updatePlaybackButtons();
-        setCaption(source === 'story' ? storyDefinition.finalCaption : t('story.lineEndedCaption'));
+        setCaption(source === 'story' ? (storyDefinition.finalCaption || storyDefinition.storyCompleteCaption || storyDefinition.title) : t('story.lineEndedCaption'));
         announce(source === 'story' ? t('story.storyEndedAnnouncement') : t('story.lineEndedAnnouncement'));
         break;
       case 'phraseStart':
